@@ -1,0 +1,31 @@
+@model WarungKuApp.ViewModels.KategoriViewModel;
+@{
+     ViewData["Title"] = "Kategori List";
+     Layout = "_LayoutTemplate";
+}
+<div class="container">
+     <h3 class="my-3">@ViewData["Title"]</h3>
+     <div class="col-md-12">
+          <form asp-action="Create" method="post" enctype="multipart/form-data">
+               <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+               <div class="form-group mb-3">
+                    <label asp-for="Nama" class="control-label"></label>
+                    <input asp-for="Nama" class="form-control" />
+                    <span asp-validation-for="Nama" class="text-danger"></span>
+               </div>
+               <div class="form-group mb-3">
+                    <label asp-for="Deskripsi" class="control-label"></label>
+                    <input asp-for="Deskripsi" class="form-control" />
+                    <span asp-validation-for="Deskripsi" class="text-danger"></span>
+               </div>
+               <div class="form-group mb-3">
+                    <label asp-for="IconFile" class="control-label"></label>
+                    <input asp-for="IconFile" type="file" class="form-control" />
+                    <span asp-validation-for="IconFile" class="text-danger"></span>
+               </div>
+               <div class="form-group mb-3">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+               </div>
+          </form>
+     </div>
+</div>

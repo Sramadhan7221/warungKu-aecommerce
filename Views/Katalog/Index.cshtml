@@ -1,0 +1,45 @@
+@model IEnumerable<WarungKuApp.ViewModels.KatalogViewModel>
+@{
+     ViewData["Title"] = "Produk List";
+     Layout = "_LayoutTemplate";
+}
+
+<section class="bg-light">
+     <div class="container py-5">
+          <div class="row text-center py-3">
+               <div class="col-lg-6 m-auto">
+                    <h1 class="h1 text-dark">Katalog Produk</h1>
+                    <h4>
+                         Produk Terbaik Bulan Ini
+                    </h4>
+               </div>
+          </div>
+          <div class="row">
+               @foreach (var item in Model)
+               {
+                    <div class="col-12 col-md-4 mb-4">
+                         <div class="card h-100">
+                              <a href="shop-single.html">
+                                   <img src="@item.GambarSrc" class="card-img-top" height="100" alt="...">
+                              </a>
+                              <div class="card-body">
+                                   <ul class="list-unstyled d-flex justify-content-between">
+                                        <li>
+                                             <i class="text-warning fa fa-star"></i>
+                                             <i class="text-warning fa fa-star"></i>
+                                             <i class="text-warning fa fa-star"></i>
+                                             <i class="text-warning fa fa-star"></i>
+                                             <i class="text-warning fa fa-star"></i>
+                                        </li>
+                                        <li class="text-muted text-right">@string.Format("{0:C}", item.Harga)</li>
+                                   </ul>
+                                   <a href="shop-single.html" class="h2 text-decoration-none text-dark">@item.Nama</a>
+                                   <a href="katalog/details" class="btn btn-sucess"></a>
+                              </div>
+                         </div>
+                    </div>
+               }
+
+          </div>
+     </div>
+</section>

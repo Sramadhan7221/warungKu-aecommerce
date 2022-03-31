@@ -1,0 +1,47 @@
+@model IEnumerable<WarungKuApp.ViewModels.AdminViewModel>
+@{
+     ViewData["Title"] = "Kategori List";
+     Layout = "_LayoutTemplate";
+     int i = 0;
+}
+
+<div class="container">
+     <h3 class="my-2">@ViewData["Title"]</h3>
+     <p>
+          <a asp-action="Create" class="btn btn-primary">Buat Baru</a>
+     </p>
+     <div class="row mt-3">
+          <div class="col-md-12">
+               <table class="table table-hover align-middle">
+                    <thead>
+                         <tr>
+                              <th scope="col">No</th>
+                              <th scope="col">@Html.DisplayNameFor(model => model.Nama)</th>
+                              <th scope="col">@Html.DisplayNameFor(model => model.NoHp)</th>
+                              <th scope="col">@Html.DisplayNameFor(model => model.Username)</th>
+                              <th scope="col">Editor</th>
+                         </tr>
+                    </thead>
+                    @if (Model != null && Model.Any())
+                    {
+                         foreach (var item in Model)
+                         {
+                              i++;
+                              <tr>
+                                   <td>@i</td>
+                                   <td>@item.Nama</td>
+                                   <td>@item.NoHp</td>
+                                   <td>@item.Username</td>
+                              </tr>
+                         }
+                    }
+                    else
+                    {
+                         <tr>
+                              <td colspan="4">Data kosong</td>
+                         </tr>
+                    }
+               </table>
+          </div>
+     </div>
+</div>
