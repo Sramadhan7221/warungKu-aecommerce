@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarungKuApp.Datas;
 
@@ -10,9 +11,10 @@ using WarungKuApp.Datas;
 namespace WarungKuApp.Datas.Migrations
 {
     [DbContext(typeof(warungkuContext))]
-    partial class warungkuContextModelSnapshot : ModelSnapshot
+    [Migration("20220331234219_tambah kolom keranjang")]
+    partial class tambahkolomkeranjang
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,0 +1,69 @@
+@using System.Globalization
+@model List<WarungKuApp.ViewModels.KeranjangViewModel>
+@{
+     ViewData["Title"] = "Home Page";
+     Layout = "_LayoutTemplate";
+     int subTotal = 0;
+}
+
+<section class="product_section layout_padding2-top layout_padding-bottom">
+     <div class="container">
+          <div class="heading_container heading_center">
+               <h2>
+                    Keranjang
+               </h2>
+               <p>
+                    Ini keranjang mu, silahkan dicheckout takut kehabisan orang lain, yang lagi ramai berbelanja
+               </p>
+          </div>
+          @foreach (var item in Model)
+          {
+               <div class="row">
+                    <div class="card mb-3">
+                         <div class="row g-0">
+                              <div class="col-md-4">
+                                   <img src="~/@item.Image" class="img-fluid rounded-start" alt="...">
+                              </div>
+                              <div class="col-md-8">
+                                   <div class="card-body">
+                                        <h5 class="card-title">@item.NamaProduk</h5>
+                                        <form asp-action="Create" method="post">
+                                             <div class="form-group mb-3">
+                                                  <input type="hidden" asp-for="IdProduk">
+                                                  <label asp-for="JmlBarang" class="control-label"></label>
+                                                  <input asp-for="JmlBarang" type="number" class="form-control" />
+                                                  <span asp-validation-for="JmlBarang" class="text-danger"></span>
+                                             </div>
+                                        </form>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          }
+          <table class="table">
+               <thead>
+                    <tr class="text-nowrap">
+                         <th>#</th>
+                         <th>Nama Produk</th>
+                         <th>Gambar</th>
+                         <th>Jumlah</th>
+                         <th>SubTotal</th>
+                    </tr>
+               </thead>
+               <tbody>
+                    @foreach (var item in Model)
+                    {
+                         i++;
+                         <tr>
+                              <td>@i</td>
+                              <td>@item.NamaProduk</td>
+                              <td> <img src="~/@item.Image" height="100" /></td>
+                              <td>@item.JmlBarang</td>
+                              <td>@item.Subtotal.ToString("C", new CultureInfo("id-ID"))</td>
+                         </tr>
+                    }
+               </tbody>
+          </table>
+     </div>
+</section>

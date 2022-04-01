@@ -9,7 +9,7 @@ using WarungKuApp.Helpers;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WarungKuApp.Controllers;
-[Authorize]
+[Authorize(Roles = AppConstant.ADMIN)]
 public class ProdukController : Controller
 {
      private readonly IProdukService _produkService;

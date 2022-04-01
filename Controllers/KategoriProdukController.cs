@@ -2,14 +2,12 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using WarungKuApp.Models;
 using WarungKuApp.ViewModels;
-using WarungKuApp.Datas.Entities;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using WarungKuApp.Interfaces;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using WarungKuApp.Helpers;
 
 namespace WarungKuApp.Controllers;
-
+[Authorize(Roles = AppConstant.ADMIN)]
 public class KategoriProdukController : Controller
 {
      private readonly IKategoriService _kategoriService;

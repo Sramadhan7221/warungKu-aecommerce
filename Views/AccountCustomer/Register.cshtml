@@ -1,0 +1,59 @@
+@model WarungKuApp.ViewModels.RegisterViewModel
+
+@{
+     ViewData["Title"] = "Login";
+     Layout = "_LayoutTemplate";
+}
+
+<div class="form">
+
+     <ul class="tab-group">
+          <li class="tab active"><a href="#signup">Register</a></li>
+          <li><a href="#login">Log In</a></li>
+     </ul>
+
+     <div class="tab-content">
+          <div id="signup">
+               <h1>Sign Up for Free</h1>
+
+               <form asp-action="register" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="field-wrap">
+                         <input asp-for="Nama" class="form-control" placeholder="Full Name" />
+                         <span asp-validation-for="Nama" class="text-danger"></span>
+                    </div>
+
+                    <div class="field-wrap">
+                         <input asp-for="NoHp" class="form-control" placeholder="Phone Number" />
+                         <span asp-validation-for="NoHp" class="text-danger"></span>
+                    </div>
+
+                    <div class="field-wrap">
+                         <input asp-for="Email" class="form-control" placeholder="Email" />
+                         <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="field-wrap">
+                         <input asp-for="Username" class="form-control" placeholder="Username" />
+                         <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+
+                    <div class="field-wrap">
+                         <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
+                         <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="field-wrap">
+                         <input asp-for="ConfirPassword" type="password" class="form-control"
+                              placeholder="Confirm Password" />
+                         <span asp-validation-for="ConfirPassword" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="button button-block" />Get Started</button>
+
+               </form>
+
+          </div>
+     </div>
+</div>

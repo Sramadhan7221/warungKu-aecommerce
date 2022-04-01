@@ -110,6 +110,7 @@ public class ProdukService : BaseDbService, IProdukService
           Produk.Nama = obj.Nama;
           Produk.Deskripsi = obj.Deskripsi;
           Produk.Gambar = (string.IsNullOrEmpty(obj.Gambar)) ? Produk.Gambar : obj.Gambar;
+          Produk.ProdKategoris = obj.ProdKategoris;
 
           DbContext.Update(Produk);
           await DbContext.SaveChangesAsync();

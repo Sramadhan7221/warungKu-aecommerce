@@ -23,6 +23,7 @@ builder.Services.AddScoped<IProdukService, ProdukService>();
 builder.Services.AddScoped<IProdKategoriService, ProdKategoriService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IKeranjangService, KeranjangService>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -32,7 +33,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                  options.ExpireTimeSpan = TimeSpan.FromDays(365);
                  options.SlidingExpiration = true;
                  options.AccessDeniedPath = "/Home/Denied";
-                 options.LoginPath = "/Account/Login";
+                 options.LoginPath = "/AccountCustomer/Login";
             }
     );
 

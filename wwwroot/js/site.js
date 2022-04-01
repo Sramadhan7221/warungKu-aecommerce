@@ -45,3 +45,9 @@ $('.tab a').on('click', function (e) {
   $(target).fadeIn(600);
   
 });
+
+$('.admin').hover(function() {
+  $('.admin-text').removeClass('d-none');
+}, function (){
+  $('.admin-text').addClass('d-none');
+})
