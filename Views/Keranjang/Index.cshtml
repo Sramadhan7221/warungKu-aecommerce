@@ -1,69 +1,71 @@
 @using System.Globalization
 @model List<WarungKuApp.ViewModels.KeranjangViewModel>
 @{
-     ViewData["Title"] = "Home Page";
-     Layout = "_LayoutTemplate";
-     int subTotal = 0;
+   ViewData["Title"] = "Home Page";
+   Layout = "_LayoutTemplate";
+   int subTotal = 0;
 }
 
 <section class="product_section layout_padding2-top layout_padding-bottom">
-     <div class="container">
-          <div class="heading_container heading_center">
-               <h2>
-                    Keranjang
-               </h2>
-               <p>
-                    Ini keranjang mu, silahkan dicheckout takut kehabisan orang lain, yang lagi ramai berbelanja
-               </p>
-          </div>
-          @foreach (var item in Model)
-          {
-               <div class="row">
-                    <div class="card mb-3">
-                         <div class="row g-0">
-                              <div class="col-md-4">
-                                   <img src="~/@item.Image" class="img-fluid rounded-start" alt="...">
+   <div class="container">
+      <div class="heading_container heading_center">
+         <h2>
+            Keranjang
+         </h2>
+         <p>
+            Ini keranjang mu, silahkan dicheckout takut kehabisan orang lain, yang lagi ramai berbelanja
+         </p>
+      </div>
+      @Html.AntiForgeryToken();
+      @foreach (var item in Model)
+      {
+         <div class="row">
+            <div class="card mb-3">
+               <div class="row g-0">
+                  <div class="col-md-4">
+                     <img src="~/@item.Image" class="img-fluid rounded-start" width="200" alt="...">
+                  </div>
+                  <div class="col-md-8">
+                     <div class="card-body">
+                        <form asp-action="Edit" method="post">
+                           <h5 class="card-title judul">@item.NamaProduk</h5>
+                           <p>@string.Format("{0:C}", item.harga)</p>
+                           <form class="update-keranjang" asp-action="Edit" asp-controller="Keranjang" method="post">
+                              <div class="d-flex justify-content-end">
+                                 <div class="form-group col-3 mb-3 mx-1">
+                                    <input type="hidden" name="Id" value="@item.IdKeranjang" />
+                                    <input type="number" name="JmlBarang" value="@item.JmlBarang" />
+                                 </div>
                               </div>
-                              <div class="col-md-8">
-                                   <div class="card-body">
-                                        <h5 class="card-title">@item.NamaProduk</h5>
-                                        <form asp-action="Create" method="post">
-                                             <div class="form-group mb-3">
-                                                  <input type="hidden" asp-for="IdProduk">
-                                                  <label asp-for="JmlBarang" class="control-label"></label>
-                                                  <input asp-for="JmlBarang" type="number" class="form-control" />
-                                                  <span asp-validation-for="JmlBarang" class="text-danger"></span>
-                                             </div>
-                                        </form>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
+                              <button class="btn btn-success" type="submit"><i class="fas fa-save"></i></button>
+                           </form>
+                        </form>
+                        <form asp-action="Delete" method="post">
+                           <input type="hidden" asp-for="@item.IdKeranjang">
+                           <button class="btn btn-danger" type="submit"><i class="fas fa-trash"></i></button>
+                        </form>
+                     </div>
+                  </div>
                </div>
-          }
-          <table class="table">
-               <thead>
-                    <tr class="text-nowrap">
-                         <th>#</th>
-                         <th>Nama Produk</th>
-                         <th>Gambar</th>
-                         <th>Jumlah</th>
-                         <th>SubTotal</th>
-                    </tr>
-               </thead>
-               <tbody>
-                    @foreach (var item in Model)
-                    {
-                         i++;
-                         <tr>
-                              <td>@i</td>
-                              <td>@item.NamaProduk</td>
-                              <td> <img src="~/@item.Image" height="100" /></td>
-                              <td>@item.JmlBarang</td>
-                              <td>@item.Subtotal.ToString("C", new CultureInfo("id-ID"))</td>
-                         </tr>
-                    }
-               </tbody>
-          </table>
-     </div>
+            </div>
+         </div>
+      }
+   </div>
 </section>
+@section Scripts {
+<script type="text/javascript">
+   $(document).ready(function () {
+      $(".update-keranjang").submit(function () {
+         $.ajax({
+            url: $(this).attr("action"),
+            type: 'post',
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function (response) {
+               alert("berhasil");
+            }
+         })
+      })
+   });
+</script>
+}

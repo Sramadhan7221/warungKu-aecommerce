@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Home Page";
     int halamanSekarang = ViewBag.halamanSekarang;
+    int halamanTotal = ViewBag.halamanTotal;
     Layout = "_LayoutTemplate";
 }
 
@@ -138,49 +139,60 @@
             </div>
         </div>
         <div class="row">
-            @foreach (var item in Model)
+            @if (Model != null)
             {
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="card h-100">
-                        <a href="shop-single.html">
-                            <img src="@item.GambarSrc" class="card-img-top" width="100" height="250" alt="...">
-                        </a>
-                        <div class="card-body">
-                            <ul class="list-unstyled d-flex justify-content-between">
-                                <li>
-                                    <i class="text-warning fa fa-star"></i>
-                                    <i class="text-warning fa fa-star"></i>
-                                    <i class="text-warning fa fa-star"></i>
-                                    <i class="text-warning fa fa-star"></i>
-                                    <i class="text-warning fa fa-star"></i>
-                                </li>
-                                <li class="text-right">@string.Format("{0:C}", item.Harga)</li>
-                            </ul>
-                            <a href="/details/@item.IdProduk" class="h3 text-decoration-none text-dark">@item.Nama</a>
-                            <div class="row">
-                                <form asp-action="Add" asp-controller="Keranjang" method="post">
-                                    @Html.AntiForgeryToken()
-                                    <input type="hidden" name="produkId" value="@item.IdProduk" />
-                                    <button class="btn btn-success" type="submit" value="Tambahkan ke Keranjang">Tambahkan
-                                        ke
-                                        keranjang</button>
-                                </form>
+                @foreach (var item in Model)
+                {
+                    <div class="col-12 col-md-4 mb-4">
+                        <div class="card h-100">
+                            <a href="shop-single.html">
+                                <img src="@item.GambarSrc" class="card-img-top" width="100" height="250" alt="...">
+                            </a>
+                            <div class="card-body">
+                                <ul class="list-unstyled d-flex justify-content-between">
+                                    <li>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                    </li>
+                                    <li class="text-right">@string.Format("{0:C}", item.Harga)</li>
+                                </ul>
+                                <a href="/details/@item.IdProduk" class="h3 text-decoration-none text-dark">@item.Nama</a>
+                                <div class="row">
+                                    <form asp-action="Add" asp-controller="Keranjang" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="produkId" value="@item.IdProduk" />
+                                        <button class="btn btn-success" type="submit" value="Tambahkan ke Keranjang">Tambahkan
+                                            ke
+                                            keranjang</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
+                }
+                <div class="col-12">
                     <div class="row">
-                        @Html.ActionLink("Sebelumnya","index","Home", new{
-                    page = halamanSekarang -1,
-                    pageCount = 3
-                    })
-                        @Html.ActionLink("Selanjutnya","index","Home", new{
-                    page = halamanSekarang +1,
-                    pageCount = 3
-                    });
+                        <div class="col-12">
+                        @for(int i = halamanSekarang; i < halamanTotal; i++){
+                            @Html.ActionLink(i.ToString()+" ","index","Home", new {
+                                page = Model.Count() < 3 ? i : i + 1,pageCount = 3
+                            })
+                        }
+                        </div>
                     </div>
+                    <p>Page : @halamanSekarang of @(halamanTotal-1)</p>
+                    @Html.ActionLink("Sebelumnya ||","index","Home", new{
+                        page = halamanSekarang == 1 ? 1 : halamanSekarang - 1, pageCount = 3
+                    })
+
+                    @Html.ActionLink(" Selanjutnya","index","Home", new {
+                        page = Model.Count() < 3 ? halamanSekarang : halamanSekarang + 1,pageCount = 3
+                    })
                 </div>
             }
-
         </div>
     </div>
 </section>

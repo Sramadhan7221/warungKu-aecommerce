@@ -45,33 +45,20 @@ public class KeranjangService : BaseDbService, IKeranjangService
           return obj;
      }
 
-     public async Task<Keranjang> AddQty(Keranjang request)
-     {
-          if (request == null)
-          {
-               throw new ArgumentNullException("KategoriProduk cannot be null");
-          }
+     public async Task<bool> Delete(int id)
+    {
+        var keranjang = await DbContext.Keranjangs.FirstOrDefaultAsync(x=>x.IdKeranjang == id);
 
-          var keranjang = await DbContext.Keranjangs.FirstOrDefaultAsync(x => x.IdKeranjang == request.IdKeranjang);
+        if(keranjang == null)
+        {
+            throw new InvalidOperationException("cannot find cart item in database");
+        }
 
-          if (keranjang == null)
-          {
-               throw new InvalidOperationException($"Keranjang with ID {request.IdKeranjang} doesn't exist in database");
-          }
+        DbContext.Remove(keranjang);
+        await DbContext.SaveChangesAsync();
 
-          keranjang.JmlBarang = request.JmlBarang;
-          keranjang.SubTotal = request.SubTotal;
-
-          DbContext.Update(keranjang);
-          await DbContext.SaveChangesAsync();
-
-          return keranjang;
-     }
-
-     public Task<bool> Delete(int id)
-     {
-          throw new NotImplementedException();
-     }
+        return true;
+    }
 
      public Task<List<Keranjang>> Get(int limit, int offset, string keyword)
      {
@@ -93,9 +80,35 @@ public class KeranjangService : BaseDbService, IKeranjangService
           throw new NotImplementedException();
      }
 
-     public Task<Keranjang> Update(Keranjang obj)
+     public async Task<Keranjang> Update(Keranjang obj)
      {
-          throw new NotImplementedException();
+          var keranjang = await DbContext.Keranjangs.FirstOrDefaultAsync(x => x.IdKeranjang == obj.IdKeranjang);
+
+          if (keranjang == null)
+          {
+               throw new InvalidOperationException("cannot find cart item in database");
+          }
+
+          //get data produk
+          var produk = await _produkService.Get(obj.IdProduk);
+
+          if (produk == null)
+          {
+               throw new InvalidOperationException("Produk tidak ditemukan");
+          }
+
+          if (obj.JmlBarang < 1)
+          {
+               obj.JmlBarang = 1;
+          }
+
+          //rumus subtotal = harga * jumlah produk
+          keranjang.SubTotal = produk.Harga * obj.JmlBarang;
+
+          DbContext.Update(keranjang);
+          await DbContext.SaveChangesAsync();
+
+          return keranjang;
      }
 
      async Task<List<KeranjangViewModel>> IKeranjangService.Get(int idCustomer)
@@ -111,7 +124,8 @@ public class KeranjangService : BaseDbService, IKeranjangService
                                    Image = b.Gambar,
                                    JmlBarang = a.JmlBarang,
                                    Subtotal = a.SubTotal,
-                                   NamaProduk = b.Nama
+                                   NamaProduk = b.Nama,
+                                   harga = b.Harga
                               }).ToListAsync();
 
           return result;

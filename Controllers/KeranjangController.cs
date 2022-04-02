@@ -36,27 +36,70 @@ public class KeranjangController : Controller
           base.OnActionExecuted(context);
      }
 
-     public async Task<IActionResult> Index (){
+     public async Task<IActionResult> Index()
+     {
           var result = await _keranjangService.Get(HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value.ToInt());
           return View(result);
      }
 
      [HttpPost]
      [ValidateAntiForgeryToken]
-     public async Task<IActionResult> Add(int? produkId){
+     public async Task<IActionResult> Add(int? produkId)
+     {
           if (produkId == null)
           {
                return BadRequest();
           }
 
           await _keranjangService.Add(new Datas.Entities.Keranjang
-        {
-            IdProduk = produkId.Value,
-            JmlBarang = 1,
-            IdCustomer = HttpContext.User.Claims.FirstOrDefault(x=>x.Type == ClaimTypes.NameIdentifier).Value.ToInt()
-        });
+          {
+               IdProduk = produkId.Value,
+               JmlBarang = 1,
+               IdCustomer = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value.ToInt()
+          });
 
-        return RedirectToAction(nameof(Index));
+          return RedirectToAction(nameof(Index));
      }
 
+     [HttpPost]
+     public async Task<IActionResult> Edit(KeranjangViewModel request)
+     {
+
+          if (!ModelState.IsValid)
+          {
+               return Json(new
+               {
+                    success = false,
+                    message = "bad request"
+               });
+          }
+
+          try
+          {
+
+               await _keranjangService.Update(new Datas.Entities.Keranjang
+               {
+                    IdKeranjang = request.IdKeranjang,
+                    JmlBarang = request.JmlBarang,
+                    IdCustomer = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value.ToInt()
+               });
+
+               return Json(new
+               {
+                    success = true
+               });
+          }
+          catch (InvalidOperationException ex)
+          {
+               return Json(new
+               {
+                    success = false,
+                    message = ex.Message
+               });
+          }
+          catch
+          {
+               throw;
+          }
+     }
 }

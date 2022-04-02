@@ -6,6 +6,5 @@ namespace WarungKuApp.Interfaces
      public interface IKeranjangService : ICrudService<Keranjang>
      {
           Task<List<KeranjangViewModel>> Get(int idCustomer);
-          Task<Keranjang> AddQty(Keranjang request);
      }
 }

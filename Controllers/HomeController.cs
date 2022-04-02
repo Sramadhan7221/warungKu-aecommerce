@@ -37,12 +37,31 @@ public class HomeController : Controller
      public async Task<IActionResult> Index(int? page, int? pageCount)
      {
           var viewModels = new List<ProdukViewModel>();
-          if (page == null || pageCount == null)
+          int limit = 3;
+          if (pageCount != null)
           {
-               pageCount = 3;
-               page = 1;
+               limit = pageCount.Value;
           }
-          var dbResult = await _produkService.Get(pageCount.Value, (page.Value - 1) * (pageCount.Value), string.Empty);
+
+          int offset = 0;
+          if (page == null)
+          {
+               offset = 0;
+          }
+          else
+          {
+               offset = (page.Value - 1) * limit;
+          }
+          var dbResult = await _produkService.Get(limit, offset, string.Empty);
+
+          if (dbResult == null || !dbResult.Any())
+          {
+               return RedirectToAction(nameof(Index), new
+               {
+                    page = page > 1 ? page - 1 : 1,
+                    pageCount = pageCount
+               });
+          }
 
           for (int i = 0; i < dbResult.Count; i++)
           {
@@ -60,7 +79,8 @@ public class HomeController : Controller
                     }).ToList()
                });
           }
-          ViewBag.halamanSekarang = page.Value;
+          ViewBag.halamanSekarang = page ?? 1;
+          ViewBag.halamanTotal = dbResult.Count() == 0 ? 1 : dbResult.Count();
 
           return View(viewModels);
      }
