@@ -1,0 +1,28 @@
+@model List<WarungKuApp.ViewModels.AlamatViewModel>
+@{
+     ViewData["Title"] = "Alamat List";
+     Layout = "_LayoutTemplate";
+     int i = 0;
+}
+
+<div class="container">
+     <h2>@ViewData["Title"]</h2>
+     <p class="mt-2">
+          <a asp-action="Create" class="btn btn-primary"> Tambah Alamat</a>
+     </p>
+     @foreach (var item in Model)
+     {
+          i++;
+          <div class="card">
+               <div class="card-body">
+                    <h5 class="card-title">Alamat @i</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@item.KabKota ,@item.Prov</h6>
+                    <p class="card-text">@item.Detail, Desa/Kelurahan.@item.Kel, Kec.@item.Kec</p>
+                    <div class="col-6">
+                         <a class="btn btn-sm btn-primary mx-1" href="alamat/edit/@item.IdAlamat">Edit</a>
+                         <a class="btn btn-sm btn-danger" href="alamat/delete/@item.IdAlamat">Delete</a>
+                    </div>
+               </div>
+          </div>
+     }
+</div>

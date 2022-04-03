@@ -46,8 +46,8 @@ $('.tab a').on('click', function (e) {
   
 });
 
-$('.admin').hover(function() {
-  $('.admin-text').removeClass('d-none');
-}, function (){
-  $('.admin-text').addClass('d-none');
-})
+// $('.admin').hover(function() {
+//   $('.admin-text').removeClass('d-none');
+// }, function (){
+//   $('.admin-text').addClass('d-none');
+// })

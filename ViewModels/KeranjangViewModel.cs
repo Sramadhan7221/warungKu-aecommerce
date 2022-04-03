@@ -6,10 +6,12 @@ public class KeranjangViewModel
 {
      public KeranjangViewModel()
      {
+          
      }
 
      public KeranjangViewModel(int idKeranjang, int idProduk, string img, string namaProduk, int idcustomer, int jmlBarang, decimal subTotal)
      {
+
           IdKeranjang = idKeranjang;
           IdProduk = idProduk;
           NamaProduk = namaProduk;
@@ -18,12 +20,15 @@ public class KeranjangViewModel
           Subtotal = subTotal;
      }
 
+     [Required]
      public int IdKeranjang { get; set; }
      public int IdProduk { get; set; }
      public string Image { get; set; }
      public string NamaProduk { get; set; }
      public int IdCustomer { get; set; }
+     [Required]
      public int JmlBarang { get; set; }
+     [Required]
      public decimal Subtotal { get; set; }
      public decimal harga { get; set; }
 

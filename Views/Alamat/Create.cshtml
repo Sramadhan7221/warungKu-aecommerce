@@ -1,0 +1,53 @@
+@model WarungKuApp.ViewModels.AlamatViewModel;
+@{
+     ViewData["Title"] = "Alamat Create";
+     Layout = "_LayoutTemplate";
+}
+<div class="container">
+     <h3 class="my-3">@ViewData["Title"]</h3>
+     <form asp-action="Create" method="post">
+          <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+          <input type="hidden" asp-for="IdCustomer">
+          <div class="mb-3">
+               <label asp-for="Prov" class="form-label form-label text-dark">Provinsi</label>
+               <input asp-for="Prov" class="form-control" />
+               <span asp-validation-for="Prov" class="form-text text-danger"></span>
+          </div>
+          <div class="mb-3">
+               <label class="form-label text-dark">Kabupaten/Kota</label>
+
+               <input asp-for="KabKota" class="form-control" />
+               <span asp-validation-for="KabKota" class="form-text text-danger"></span>
+
+          </div>
+          <div class="mb-3">
+               <label class="form-label text-dark">Kecamatan</label>
+
+               <input asp-for="Kec" class="form-control" />
+               <span asp-validation-for="Kec" class="form-text text-danger"></span>
+
+          </div>
+          <div class="mb-3">
+               <label class="form-label text-dark">Kelurahan</label>
+
+               <input asp-for="Kel" class="form-control" />
+               <span asp-validation-for="Kel" class="form-text text-danger"></span>
+
+          </div>
+          <div class="mb-3">
+               <label class="form-label text-dark">KodePos</label>
+
+               <input asp-for="KodePos" class="form-control" maxlength="5" />
+               <span asp-validation-for="KodePos" class="form-text text-danger"></span>
+
+          </div>
+          <div class="mb-3">
+               <label class="form-label text-dark">Detail</label>
+
+               <input asp-for="Detail" class="form-control" />
+               <span asp-validation-for="Detail" class="form-text text-danger"></span>
+
+          </div>
+          <input type="submit" value="Create" class="btn btn-primary" />
+     </form>
+</div>

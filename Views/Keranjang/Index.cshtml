@@ -3,7 +3,6 @@
 @{
    ViewData["Title"] = "Home Page";
    Layout = "_LayoutTemplate";
-   int subTotal = 0;
 }
 
 <section class="product_section layout_padding2-top layout_padding-bottom">
@@ -16,7 +15,7 @@
             Ini keranjang mu, silahkan dicheckout takut kehabisan orang lain, yang lagi ramai berbelanja
          </p>
       </div>
-      @Html.AntiForgeryToken();
+      @* @Html.AntiForgeryToken(); *@
       @foreach (var item in Model)
       {
          <div class="row">
@@ -27,18 +26,23 @@
                   </div>
                   <div class="col-md-8">
                      <div class="card-body">
+                        <h5 class="card-title judul">@item.NamaProduk</h5>
+                        <p>@string.Format("{0:C}", item.harga)</p>
                         <form asp-action="Edit" method="post">
-                           <h5 class="card-title judul">@item.NamaProduk</h5>
-                           <p>@string.Format("{0:C}", item.harga)</p>
-                           <form class="update-keranjang" asp-action="Edit" asp-controller="Keranjang" method="post">
-                              <div class="d-flex justify-content-end">
-                                 <div class="form-group col-3 mb-3 mx-1">
-                                    <input type="hidden" name="Id" value="@item.IdKeranjang" />
-                                    <input type="number" name="JmlBarang" value="@item.JmlBarang" />
-                                 </div>
+                           <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                           <input asp-for="@item.IdKeranjang" type="hidden" />
+                           <input asp-for="@item.IdProduk" type="hidden" />
+                           <input asp-for="@item.NamaProduk" type="hidden" />
+                           <input asp-for="@item.IdCustomer" type="hidden" />
+                           <input asp-for="@item.Subtotal" type="hidden" />
+                           <input asp-for="@item.Image" type="hidden" />
+                           <input asp-for="@item.harga" type="hidden" />
+                           <div class="d-flex justify-content-end">
+                              <div class="form-group col-3 mb-3 mx-1">
+                                 <input asp-for="@item.JmlBarang" type="number" class="text-dark" />
                               </div>
-                              <button class="btn btn-success" type="submit"><i class="fas fa-save"></i></button>
-                           </form>
+                           </div>
+                           <button class="btn btn-success" type="submit"><i class="fas fa-save"></i></button>
                         </form>
                         <form asp-action="Delete" method="post">
                            <input type="hidden" asp-for="@item.IdKeranjang">
@@ -54,18 +58,18 @@
 </section>
 @section Scripts {
 <script type="text/javascript">
-   $(document).ready(function () {
-      $(".update-keranjang").submit(function () {
-         $.ajax({
-            url: $(this).attr("action"),
-            type: 'post',
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function (response) {
-               alert("berhasil");
-            }
-         })
-      })
-   });
+   //$(document).ready(function () {
+   //   $(".update-keranjang").submit(function () {
+   //      $.ajax({
+   //         url: $(this).attr("action"),
+   //         type: 'post',
+   //         data: $(this).serialize(),
+   //         dataType: 'json',
+   //         success: function (response) {
+   //            alert("berhasil");
+   //         }
+   //      })
+   //   })
+   //});
 </script>
 }

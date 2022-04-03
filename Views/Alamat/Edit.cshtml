@@ -1,0 +1,47 @@
+@model WarungKuApp.ViewModels.AlamatViewModel;
+@{
+     ViewData["Title"] = "Alamat Create";
+     Layout = "_LayoutTemplate";
+}
+<div class="container">
+     <h3 class="my-3">@ViewData["Title"]</h3>
+     <div class="col-md-12">
+          <form asp-action="Edit" method="post">
+               <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+               <input asp-for="IdAlamat" type="hidden">
+               <div class="form-group mb-3">
+                    <label asp-for="Prov" class="control-label"></label>
+                    <input asp-for="Prov" class="form-control" />
+                    <span asp-validation-for="Prov" class="text-danger"></span>
+               </div>
+               <div class="form-group mb-3">
+                    <label asp-for="KabKota" class="control-label"></label>
+                    <input asp-for="KabKota" class="form-control" />
+                    <span asp-validation-for="KabKota" class="text-danger"></span>
+               </div>
+               <div class="form-group mb-3">
+                    <label asp-for="Kec" class="control-label"></label>
+                    <input asp-for="Kec" class="form-control" />
+                    <span asp-validation-for="Kec" class="text-danger"></span>
+               </div>
+               <div class="form-group mb-3">
+                    <label asp-for="Kel" class="control-label"></label>
+                    <input asp-for="Kel" class="form-control" />
+                    <span asp-validation-for="Kel" class="text-danger"></span>
+               </div>
+               <div class="form-group mb-3">
+                    <label asp-for="KodePos" class="control-label"></label>
+                    <input asp-for="KodePos" class="form-control" maxlength="5" />
+                    <span asp-validation-for="KodePos" class="text-danger"></span>
+               </div>
+               <div class="form-group mb-3">
+                    <label asp-for="Detail" class="control-label"></label>
+                    <input asp-for="Detail" class="form-control" />
+                    <span asp-validation-for="Detail" class="text-danger"></span>
+               </div>
+               <div class="form-group mb-3">
+                    <input type="submit" value="Simpan" class="btn btn-primary" />
+               </div>
+          </form>
+     </div>
+</div>

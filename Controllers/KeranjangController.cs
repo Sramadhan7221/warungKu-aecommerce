@@ -62,6 +62,7 @@ public class KeranjangController : Controller
      }
 
      [HttpPost]
+     [ValidateAntiForgeryToken]
      public async Task<IActionResult> Edit(KeranjangViewModel request)
      {
 
@@ -73,7 +74,6 @@ public class KeranjangController : Controller
                     message = "bad request"
                });
           }
-
           try
           {
 

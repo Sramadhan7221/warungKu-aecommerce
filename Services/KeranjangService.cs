@@ -65,7 +65,7 @@ public class KeranjangService : BaseDbService, IKeranjangService
           throw new NotImplementedException();
      }
 
-     public Task<Keranjang?> Get(int id)
+     public async Task<Keranjang?> Get(int id)
      {
           throw new NotImplementedException();
      }
