@@ -21,11 +21,12 @@
             <table class="table">
                <thead>
                   <tr class="text-nowrap">
-                     <th>#</th>
-                     <th>Nama Produk</th>
-                     <th>Gambar</th>
-                     <th>Jumlah</th>
-                     <th>SubTotal</th>
+                     <th class="text-center">#</th>
+                     <th class="text-center">Nama Produk</th>
+                     <th class="text-center">Gambar</th>
+                     <th class="text-center">Jumlah</th>
+                     <th class="text-center">SubTotal</th>
+                     <th class="text-center">Tombol</th>
                   </tr>
                </thead>
                <tbody>
@@ -33,15 +34,16 @@
                   {
                      i++;
                      <tr>
-                        <td>@i</td>
-                        <td>@item.NamaProduk</td>
-                        <td> <img src="~/@item.Image" height="100" /></td>
-                        <td>
+                        <td class="text-center">@i</td>
+                        <td class="text-center">@item.NamaProduk</td>
+                        <td class="text-center"> <img src="~/@item.Image" height="100" /></td>
+                        <td class="text-center">
                            <input type="hidden" name="Id" value="@item.IdKeranjang" />
                            <input type="hidden" name="Harga" value="@item.Subtotal" />
                            <input type="number" class="text-dark" name="Qty" value="@item.JmlBarang" min="1" />
                         </td>
-                        <td>@item.Subtotal.ToString("C", new CultureInfo("id-ID"))</td>
+                        <td class="text-center">@item.Subtotal.ToString("C", new CultureInfo("id-ID"))</td>
+                        <td class="text-center"><button class="btn btn-sm btn-danger" type="button"><i class="fas fa-trash"></i></button></td>
                      </tr>
                   }
                </tbody>
