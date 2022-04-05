@@ -6,10 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Authorization;
 using WarungKuApp.Interfaces;
+using WarungKuApp.Helpers;
 
 namespace WarungKuApp.Controllers;
 
-public class HomeController : Controller
+public class HomeController : BaseController
 {
      private readonly ILogger<HomeController> _logger;
      private readonly IProdukService _produkService;
@@ -20,39 +21,11 @@ public class HomeController : Controller
           _produkService = produkService;
      }
 
-     public override void OnActionExecuted(ActionExecutedContext context)
-     {
-          if (HttpContext.User == null || HttpContext.User.Identity == null)
-          {
-               ViewBag.IsLogged = false;
-          }
-          else
-          {
-               ViewBag.IsLogged = HttpContext.User.Identity.IsAuthenticated;
-          }
-
-          base.OnActionExecuted(context);
-     }
-
      public async Task<IActionResult> Index(int? page, int? pageCount)
      {
           var viewModels = new List<ProdukViewModel>();
-          int limit = 3;
-          if (pageCount != null)
-          {
-               limit = pageCount.Value;
-          }
-
-          int offset = 0;
-          if (page == null)
-          {
-               offset = 0;
-          }
-          else
-          {
-               offset = (page.Value - 1) * limit;
-          }
-          var dbResult = await _produkService.Get(limit, offset, string.Empty);
+          var tuplePagination = Common.ToLimitOffset(page, pageCount);
+          var dbResult = await _produkService.Get(tuplePagination.Item1, tuplePagination.Item2, string.Empty);
 
           if (dbResult == null || !dbResult.Any())
           {

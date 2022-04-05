@@ -10,41 +10,78 @@ using System.Security.Claims;
 using WarungKuApp.Helpers;
 using WarungKuApp.Datas.Entities;
 using System.Globalization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WarungKuApp.Controllers;
 
-[Authorize(Roles = AppConstant.CUSTOMER)]
-public class TransaksiController : Controller
+[Authorize]
+public class TransaksiController : BaseController
 {
      private readonly ILogger<TransaksiController> _logger;
      private readonly IKeranjangService _keranjangService;
      private readonly ITransaksiService _orderService;
      private readonly IDetailOrderService _detailOrderService;
+     private readonly IStatusService _statusService;
 
      public TransaksiController(ILogger<TransaksiController> logger, IKeranjangService keranjangService,
-     ITransaksiService orderService, IDetailOrderService detailOrderService)
+     ITransaksiService orderService, IDetailOrderService detailOrderService, IStatusService statusService)
      {
           _logger = logger;
           _keranjangService = keranjangService;
           _orderService = orderService;
           _detailOrderService = detailOrderService;
+          _statusService = statusService;
      }
 
-     public override void OnActionExecuted(ActionExecutedContext context)
+     [Authorize(Roles = AppConstant.ADMIN)]
+
+     public async Task<IActionResult> index(int? page, int? pageCount){
+          var tuplePagination = Common.ToLimitOffset(page, pageCount);
+          var result = await _orderService.GetV3(tuplePagination.Item1, tuplePagination.Item2);
+
+          await SetStatusListAsSelectListItem();
+          ViewBag.FilterDate = null;
+
+          return View(result);
+     }
+
+     [HttpPost]
+     public async Task<IActionResult> Index([FromQuery] int? page, [FromQuery] int? pageCount, int? status, DateTime? date)
      {
-          if (HttpContext.User == null || HttpContext.User.Identity == null)
+          var tuplePagination = Common.ToLimitOffset(page, pageCount);
+
+          var result = await _orderService.GetV3(tuplePagination.Item1, tuplePagination.Item2, status, date);
+
+          await SetStatusListAsSelectListItem(status);
+          if (date != null)
           {
-               ViewBag.IsLogged = false;
+               ViewBag.FilterDate = date.Value.ToString("MM/dd/yyyy");
+          }
+
+          return View(result);
+     }
+
+     private async Task SetStatusListAsSelectListItem(int? status = null)
+     {
+          var statusList = await _statusService.Get();
+
+          if (statusList == null || !statusList.Any())
+          {
+               ViewBag.StatusList = new List<SelectListItem>();
           }
           else
           {
-               ViewBag.IsLogged = HttpContext.User.Identity.IsAuthenticated;
+               ViewBag.StatusList = statusList.Select(x => new SelectListItem
+               {
+                    Value = x.IdSatus.ToString(),
+                    Text = x.Nama,
+                    Selected = status != null && status.Value == x.IdSatus
+               }).ToList();
           }
-
-          base.OnActionExecuted(context);
      }
 
-     public async Task<IActionResult> Index()
+     [Authorize(Roles = AppConstant.CUSTOMER)]
+     public async Task<IActionResult> MyOrder()
      {
 
           var result = await _orderService.Riwayat(HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value.ToInt());
@@ -79,7 +116,7 @@ public class TransaksiController : Controller
                          SubTotal = decimal.Parse(request.harga[i])
                     });
                }
-               return RedirectToAction(nameof(Index),"Keranjang");
+               return RedirectToAction(nameof(Index), "Keranjang");
           }
 
           int idCustomer = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value.ToInt();
@@ -138,5 +175,9 @@ public class TransaksiController : Controller
      {
           var result = await _detailOrderService.Get(HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value.ToInt());
           return View(result);
+     }
+
+     public async Task<IActionResult> Detail (int noTransaksi){
+          
      }
 }

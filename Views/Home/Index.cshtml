@@ -181,7 +181,7 @@
                                 @for (int i = 1; i < halamanTotal; i++)
                                 {
                                     @Html.ActionLink(i.ToString()+" ","index","Home", new {
-                        page = Model.Count() < 3 ? i : i + 1,pageCount = 3
+                        page = Model.Count() < 3 ? i : i + 1,AppConstant.DEFAULT_PAGE_COUNT
                         })
                                 }
                             }
@@ -190,7 +190,7 @@
                                 @for (int i = halamanSekarang; i < halamanTotal; i++)
                                 {
                                     @Html.ActionLink(i.ToString()+" ","index","Home", new {
-                        page = Model.Count() < 3 ? i : i + 1,pageCount = 3
+                        page = Model.Count() < 3 ? i : i + 1,AppConstant.DEFAULT_PAGE_COUNT
                         })
                                 }
                             }
@@ -198,11 +198,11 @@
                     </div>
                     <p>Page : @halamanSekarang of @(halamanTotal-1)</p>
                     @Html.ActionLink("Sebelumnya ||","index","Home", new{
-                page = halamanSekarang == 1 ? 1 : halamanSekarang - 1, pageCount = 3
+                page = halamanSekarang == 1 ? 1 : halamanSekarang - 1, AppConstant.DEFAULT_PAGE_COUNT
                 })
 
                     @Html.ActionLink(" Selanjutnya","index","Home", new {
-                page = Model.Count() < 3 ? halamanSekarang : halamanSekarang + 1,pageCount = 3
+                page = Model.Count() < 3 ? halamanSekarang : halamanSekarang + 1,AppConstant.DEFAULT_PAGE_COUNT
                 })
                 </div>
             }

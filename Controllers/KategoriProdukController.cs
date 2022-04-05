@@ -8,7 +8,7 @@ using WarungKuApp.Helpers;
 
 namespace WarungKuApp.Controllers;
 [Authorize(Roles = AppConstant.ADMIN)]
-public class KategoriProdukController : Controller
+public class KategoriProdukController : BaseController
 {
      private readonly IKategoriService _kategoriService;
      private readonly ILogger<KategoriProdukController> _logger;

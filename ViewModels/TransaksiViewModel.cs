@@ -17,9 +17,11 @@ public class TransaksiViewModel
           Alamat = alamat;
           Status = status;
      }
+     public int Id { get; set; }
      public DateTime TglTransaksi { get; set; }
      public decimal JmlBayar { get; set; }
      public string Alamat { get; set; }
      public string Status { get; set; }
+     public int StatusId { get; set; }
      public DetailOrderViewModel[] DetailOrders { get; set; }
 }
