@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using WarungKuApp.Interfaces;
 using System.Security.Claims;
 using WarungKuApp.Helpers;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WarungKuApp.Controllers;
 
@@ -16,10 +17,16 @@ public class KeranjangController : Controller
 {
      private readonly ILogger<KeranjangController> _logger;
      private readonly IKeranjangService _keranjangService;
-     public KeranjangController(ILogger<KeranjangController> logger, IKeranjangService keranjangService)
+
+     private readonly IAccountService _accountService;
+
+     public KeranjangController(ILogger<KeranjangController> logger,
+     IKeranjangService keranjangService,
+     IAccountService accountService)
      {
           _logger = logger;
           _keranjangService = keranjangService;
+          _accountService = accountService;
      }
 
      public override void OnActionExecuted(ActionExecutedContext context)
@@ -38,7 +45,12 @@ public class KeranjangController : Controller
 
      public async Task<IActionResult> Index()
      {
-          var result = await _keranjangService.Get(HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value.ToInt());
+          int idCustomer = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value.ToInt();
+          var result = await _keranjangService.Get(idCustomer);
+
+          var alamat = await _accountService.GetAlamat(idCustomer);
+
+          ViewBag.AlamatList = alamat.Select(x => new SelectListItem(x.Item2.ToString(), x.Item1.ToString())).ToList();
           return View(result);
      }
 
@@ -61,9 +73,10 @@ public class KeranjangController : Controller
           return RedirectToAction(nameof(Index));
      }
 
+
      [HttpPost]
      [ValidateAntiForgeryToken]
-     public async Task<IActionResult> Edit(KeranjangViewModel request)
+     public async Task<IActionResult> Edit(KeranjangUpdateViewModel request)
      {
 
           if (!ModelState.IsValid)
@@ -74,6 +87,7 @@ public class KeranjangController : Controller
                     message = "bad request"
                });
           }
+
           try
           {
 
@@ -83,6 +97,43 @@ public class KeranjangController : Controller
                     JmlBarang = request.JmlBarang,
                     IdCustomer = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value.ToInt()
                });
+
+               return Json(new
+               {
+                    success = true
+               });
+          }
+          catch (InvalidOperationException ex)
+          {
+               return Json(new
+               {
+                    success = false,
+                    message = ex.Message
+               });
+          }
+          catch
+          {
+               throw;
+          }
+     }
+
+     [HttpPost]
+     [ValidateAntiForgeryToken]
+     public async Task<IActionResult> Delete(int? id)
+     {
+          if (id == null)
+          {
+               return Json(new
+               {
+                    success = false,
+                    message = "keranjang item yang mau dihapus tidak ditemukan"
+               });
+          }
+
+          try
+          {
+
+               await _keranjangService.Delete(id.Value);
 
                return Json(new
                {

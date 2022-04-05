@@ -3,6 +3,7 @@
 @{
    ViewData["Title"] = "Home Page";
    Layout = "_LayoutTemplate";
+   int i = 0;
 }
 
 <section class="product_section layout_padding2-top layout_padding-bottom">
@@ -15,61 +16,51 @@
             Ini keranjang mu, silahkan dicheckout takut kehabisan orang lain, yang lagi ramai berbelanja
          </p>
       </div>
-      @* @Html.AntiForgeryToken(); *@
-      @foreach (var item in Model)
-      {
-         <div class="row">
-            <div class="card mb-3">
-               <div class="row g-0">
-                  <div class="col-md-4">
-                     <img src="~/@item.Image" class="img-fluid rounded-start" width="200" alt="...">
-                  </div>
-                  <div class="col-md-8">
-                     <div class="card-body">
-                        <h5 class="card-title judul">@item.NamaProduk</h5>
-                        <p>@string.Format("{0:C}", item.harga)</p>
-                        <form asp-action="Edit" method="post">
-                           <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                           <input asp-for="@item.IdKeranjang" type="hidden" />
-                           <input asp-for="@item.IdProduk" type="hidden" />
-                           <input asp-for="@item.NamaProduk" type="hidden" />
-                           <input asp-for="@item.IdCustomer" type="hidden" />
-                           <input asp-for="@item.Subtotal" type="hidden" />
-                           <input asp-for="@item.Image" type="hidden" />
-                           <input asp-for="@item.harga" type="hidden" />
-                           <div class="d-flex justify-content-end">
-                              <div class="form-group col-3 mb-3 mx-1">
-                                 <input asp-for="@item.JmlBarang" type="number" class="text-dark" />
-                              </div>
-                           </div>
-                           <button class="btn btn-success" type="submit"><i class="fas fa-save"></i></button>
-                        </form>
-                        <form asp-action="Delete" method="post">
-                           <input type="hidden" asp-for="@item.IdKeranjang">
-                           <button class="btn btn-danger" type="submit"><i class="fas fa-trash"></i></button>
-                        </form>
-                     </div>
-                  </div>
-               </div>
+      <div class="row">
+         <form asp-controller="Transaksi" asp-action="Checkout">
+            <table class="table">
+               <thead>
+                  <tr class="text-nowrap">
+                     <th>#</th>
+                     <th>Nama Produk</th>
+                     <th>Gambar</th>
+                     <th>Jumlah</th>
+                     <th>SubTotal</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  @foreach (var item in Model)
+                  {
+                     i++;
+                     <tr>
+                        <td>@i</td>
+                        <td>@item.NamaProduk</td>
+                        <td> <img src="~/@item.Image" height="100" /></td>
+                        <td>
+                           <input type="hidden" name="Id" value="@item.IdKeranjang" />
+                           <input type="hidden" name="Harga" value="@item.Subtotal" />
+                           <input type="number" class="text-dark" name="Qty" value="@item.JmlBarang" min="1" />
+                        </td>
+                        <td>@item.Subtotal.ToString("C", new CultureInfo("id-ID"))</td>
+                     </tr>
+                  }
+               </tbody>
+            </table>
+            <label>Pilih Alamat Pengiriman</label>
+            <select name="Alamat" asp-items="@ViewBag.AlamatList"></select>
+            <div class="col-12 mt-3">
+               <button class="btn btn-success mx-1" type="submit" name="Action" value="Checkout">Checkout</button>
+               <button class="btn btn-primary" type="submit" name="Action" value="Simpan">Simpan</button>
             </div>
-         </div>
-      }
+         </form>
+      </div>
    </div>
 </section>
+
 @section Scripts {
 <script type="text/javascript">
-   //$(document).ready(function () {
-   //   $(".update-keranjang").submit(function () {
-   //      $.ajax({
-   //         url: $(this).attr("action"),
-   //         type: 'post',
-   //         data: $(this).serialize(),
-   //         dataType: 'json',
-   //         success: function (response) {
-   //            alert("berhasil");
-   //         }
-   //      })
-   //   })
-   //});
+   $(document).ready(function () {
+
+   });
 </script>
 }

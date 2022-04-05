@@ -11,7 +11,7 @@ namespace WarungKuApp.Datas.Entities
         }
 
         public int IdSatus { get; set; }
-        public int Nama { get; set; }
+        public string? Nama { get; set; }
 
         public virtual ICollection<Transaksi> Transaksis { get; set; }
     }

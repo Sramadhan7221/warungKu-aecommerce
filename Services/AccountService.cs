@@ -48,4 +48,11 @@ public class AccountService : BaseDbService, IAccountService
 
           return newCustomer;
      }
+
+     public async Task<List<Tuple<int, string>>> GetAlamat(int idCustomer)
+     {
+          return await DbContext.Alamats.Where(x => x.IdCustomer == idCustomer)
+          .Select(x => new Tuple<int, string>(x.IdAlamat, x.Detail))
+          .ToListAsync();
+     }
 }

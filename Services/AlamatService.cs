@@ -88,24 +88,23 @@ public class AlamatService : BaseDbService, IAlamatService
           return result;
      }
 
-     // async Task<List<AlamatViewModel>> IAlamatService.Get(int idCustomer)
-     // {
-     //      var result = await (from a in DbContext.Alamats
-     //                          where a.IdCustomer == idCustomer
-     //                          select new AlamatViewModel
-     //                          {
-     //                               IdAlamat = a.IdAlamat,
-     //                               IdCustomer = a.IdCustomer,
-     //                               Prov = a.Prov,
-     //                               KabKota = a.KabKota,
-     //                               Kec = a.Kec,
-     //                               Kel = a.Kel,
-     //                               Detail = a.Detail,
-     //                               KodePos = a.KodePos
-     //                          }).ToListAsync();
-
-     //      return result;
-     // }
+     async Task<List<AlamatViewModel>> IAlamatService.GetAlamat(int idCustomer)
+     {
+          var result = await (from a in DbContext.Alamats
+                              where a.IdCustomer == idCustomer
+                              select new AlamatViewModel
+                              {
+                                   IdAlamat = a.IdAlamat,
+                                   IdCustomer = a.IdCustomer,
+                                   Prov = a.Prov,
+                                   KabKota = a.KabKota,
+                                   Kec = a.Kec,
+                                   Kel = a.Kel,
+                                   Detail = a.Detail,
+                                   KodePos = a.KodePos
+                              }).ToListAsync();
+          return result;
+     }
 
      public Task<Alamat?> Get(Expression<Func<Alamat, bool>> func)
      {

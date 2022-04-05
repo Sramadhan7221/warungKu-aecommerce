@@ -45,6 +45,12 @@ public class KeranjangService : BaseDbService, IKeranjangService
           return obj;
      }
 
+     public async Task Clear(int idCustomer)
+     {
+          DbContext.RemoveRange(DbContext.Keranjangs.Where(x => x.IdCustomer == idCustomer));
+          await DbContext.SaveChangesAsync();
+     }
+
      public async Task<bool> Delete(int id)
     {
         var keranjang = await DbContext.Keranjangs.FirstOrDefaultAsync(x=>x.IdKeranjang == id);
@@ -89,21 +95,15 @@ public class KeranjangService : BaseDbService, IKeranjangService
                throw new InvalidOperationException("cannot find cart item in database");
           }
 
-          //get data produk
-          var produk = await _produkService.Get(obj.IdProduk);
-
-          if (produk == null)
-          {
-               throw new InvalidOperationException("Produk tidak ditemukan");
-          }
-
           if (obj.JmlBarang < 1)
           {
                obj.JmlBarang = 1;
           }
+          var subtotalBaru = (keranjang.SubTotal / keranjang.JmlBarang) * obj.JmlBarang;
 
           //rumus subtotal = harga * jumlah produk
-          keranjang.SubTotal = produk.Harga * obj.JmlBarang;
+          keranjang.SubTotal = subtotalBaru;
+          keranjang.JmlBarang = obj.JmlBarang;
 
           DbContext.Update(keranjang);
           await DbContext.SaveChangesAsync();

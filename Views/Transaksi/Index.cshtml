@@ -1,0 +1,52 @@
+@using System.Globalization
+@model WarungKuApp.ViewModels.DetailOrderViewModel;
+@{
+    ViewData["Title"] = "Pesanan saya";
+    Layout = "_LayoutTemplate";
+}
+
+<h1 class="text-dark">Record pesanan</h1>
+
+<div class="container">
+    @foreach (var item in ViewBag.result)
+    {
+        <div class="card  mt-3">
+            <div class="card-body">
+                <input type="hidden">
+                <h5 class="card-title">@item.TglTransaksi.ToString("d")</h5>
+                <div class="row">
+                    <div class="col-6"><span class="card-subtitle mb-2 text-muted">Dikirim ke : @item.Alamat</span></div>
+                    <div class="col-6"><span class="d-flex justify-content-end card-subtitle mb-2 text-muted">Status :
+                            @item.Status</span></div>
+                </div>
+                <p>Detail Pesanan</p>
+                @foreach (var detail in item.DetailOrders)
+                {
+                    <div class="row">
+                        <div class="col-4">
+                            <span class="card-text">@detail.NamaProduk</span>
+                        </div>
+                        <div class="col-4">
+                            <span class="card-text">@detail.JmlBarang</span>
+                        </div>
+                        <div class="col-4">
+                            <span class="card-text">@detail.SubTotal.ToString("C", new CultureInfo("id-ID"))</span>
+                        </div>
+                    </div>
+                }
+                <h6 class="d-flex justify-content-end card-subtitle mt-2">Total Bayar = @item.JmlBayar.ToString("C", new
+                CultureInfo("id-ID"))</h6>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+@section Scripts {
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+</script>
+}

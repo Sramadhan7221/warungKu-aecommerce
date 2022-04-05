@@ -176,21 +176,34 @@
                 <div class="col-12">
                     <div class="row">
                         <div class="col-12">
-                        @for(int i = halamanSekarang; i < halamanTotal; i++){
-                            @Html.ActionLink(i.ToString()+" ","index","Home", new {
-                                page = Model.Count() < 3 ? i : i + 1,pageCount = 3
-                            })
-                        }
+                            @if (halamanSekarang < 10)
+                            {
+                                @for (int i = 1; i < halamanTotal; i++)
+                                {
+                                    @Html.ActionLink(i.ToString()+" ","index","Home", new {
+                        page = Model.Count() < 3 ? i : i + 1,pageCount = 3
+                        })
+                                }
+                            }
+                            else
+                            {
+                                @for (int i = halamanSekarang; i < halamanTotal; i++)
+                                {
+                                    @Html.ActionLink(i.ToString()+" ","index","Home", new {
+                        page = Model.Count() < 3 ? i : i + 1,pageCount = 3
+                        })
+                                }
+                            }
                         </div>
                     </div>
                     <p>Page : @halamanSekarang of @(halamanTotal-1)</p>
                     @Html.ActionLink("Sebelumnya ||","index","Home", new{
-                        page = halamanSekarang == 1 ? 1 : halamanSekarang - 1, pageCount = 3
-                    })
+                page = halamanSekarang == 1 ? 1 : halamanSekarang - 1, pageCount = 3
+                })
 
                     @Html.ActionLink(" Selanjutnya","index","Home", new {
-                        page = Model.Count() < 3 ? halamanSekarang : halamanSekarang + 1,pageCount = 3
-                    })
+                page = Model.Count() < 3 ? halamanSekarang : halamanSekarang + 1,pageCount = 3
+                })
                 </div>
             }
         </div>

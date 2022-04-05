@@ -28,6 +28,7 @@ namespace WarungKuApp.Datas
         public virtual DbSet<Produk> Produks { get; set; } = null!;
         public virtual DbSet<StatusOrder> StatusOrders { get; set; } = null!;
         public virtual DbSet<Transaksi> Transaksis { get; set; } = null!;
+        public virtual DbSet<DetailOrder> DetailOrders { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -186,6 +187,8 @@ namespace WarungKuApp.Datas
 
                 entity.ToTable("keranjang");
 
+                entity.HasIndex(e => e.IdProduk, "keranjang_FK");
+                entity.HasIndex(e => e.IdCustomer, "keranjang_FK_1");
                 entity.Property(e => e.IdKeranjang)
                     .HasColumnType("int(11)")
                     .HasColumnName("id_keranjang");
@@ -194,6 +197,8 @@ namespace WarungKuApp.Datas
                     .HasColumnType("int(11)")
                     .HasColumnName("id_customer");
 
+                entity.Property(e => e.IdProduk).HasColumnName("id_produk");
+
                 entity.Property(e => e.JmlBarang)
                     .HasColumnType("int(11)")
                     .HasColumnName("jml_barang");
@@ -201,7 +206,46 @@ namespace WarungKuApp.Datas
                 entity.Property(e => e.SubTotal)
                     .HasPrecision(10)
                     .HasColumnName("sub_total");
+
+                entity.HasOne(d => d.IdCustomerNavigation)
+                    .WithMany(p => p.Keranjangs)
+                    .HasForeignKey(d => d.IdCustomer)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("keranjang_FK_1");
+                entity.HasOne(d => d.IdProdukNavigation)
+                    .WithMany(p => p.Keranjangs)
+                    .HasForeignKey(d => d.IdProduk)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("keranjang_FK");
             });
+
+            modelBuilder.Entity<DetailOrder>(entity =>
+               {
+
+                    entity.ToTable("detail_order");
+
+                    entity.HasIndex(e => e.IdOrder, "detail_order_FK_1");
+
+                    entity.Property(e => e.Id).HasColumnName("id");
+
+                    entity.Property(e => e.IdOrder).HasColumnName("id_order");
+
+                    entity.Property(e => e.IdProduk).HasColumnName("id_produk");
+
+                    entity.Property(e => e.Harga).HasColumnName("harga")
+                    .HasPrecision(10);
+
+                    entity.Property(e => e.JmlBarang).HasColumnName("jml_barang");
+
+                    entity.Property(e => e.SubTotal).HasColumnName("subtotal")
+                    .HasPrecision(10);
+
+                    entity.HasOne(d => d.Order)
+                        .WithMany(p => p.DetailOrders)
+                        .HasForeignKey(d => d.IdOrder)
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("detail_order_FK_1");
+               });
 
             modelBuilder.Entity<Pembayaran>(entity =>
             {
@@ -355,7 +399,7 @@ namespace WarungKuApp.Datas
                     .HasColumnName("id_satus");
 
                 entity.Property(e => e.Nama)
-                    .HasColumnType("int(11)")
+                    .HasMaxLength(255)
                     .HasColumnName("nama");
             });
 
@@ -380,10 +424,6 @@ namespace WarungKuApp.Datas
                     .HasColumnType("int(11)")
                     .HasColumnName("id_customer");
 
-                entity.Property(e => e.IdKeranjang)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("id_keranjang");
-
                 entity.Property(e => e.JmlBayar)
                     .HasPrecision(10, 2)
                     .HasColumnName("jml_bayar");
@@ -392,11 +432,26 @@ namespace WarungKuApp.Datas
                     .HasColumnType("text")
                     .HasColumnName("notes");
 
+                entity.Property(e => e.TglTransaksi)
+                    .HasColumnType("datetime")
+                    .HasColumnName("tgl_transaksi");
+
                 entity.Property(e => e.StatusId)
                     .HasColumnType("int(11)")
                     .HasColumnName("status_id");
 
-                entity.HasOne(d => d.Status)
+                entity.HasOne(d => d.IdAlamatNavigation)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.IdAlamat)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("order_FK_2");
+                entity.HasOne(d => d.IdCustomerNavigation)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.IdCustomer)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("order_FK_1");
+
+                entity.HasOne(d => d.StatusNavigation)
                     .WithMany(p => p.Transaksis)
                     .HasForeignKey(d => d.StatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)

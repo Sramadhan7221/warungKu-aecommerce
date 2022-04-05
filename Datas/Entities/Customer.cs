@@ -8,6 +8,9 @@ namespace WarungKuApp.Datas.Entities
         public Customer()
         {
             Alamats = new HashSet<Alamat>();
+            Keranjangs = new HashSet<Keranjang>();
+            Orders = new HashSet<Transaksi>();
+            Pembayarans = new HashSet<Pembayaran>();
         }
 
         public int IdCustomer { get; set; }
@@ -19,5 +22,8 @@ namespace WarungKuApp.Datas.Entities
         public string Email { get; set; } = null!;
 
         public virtual ICollection<Alamat> Alamats { get; set; }
+        public virtual ICollection<Keranjang> Keranjangs { get; set; }
+        public virtual ICollection<Transaksi> Orders { get; set; }
+        public virtual ICollection<Pembayaran> Pembayarans { get; set; }
     }
 }

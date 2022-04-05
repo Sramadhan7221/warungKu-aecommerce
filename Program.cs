@@ -25,6 +25,8 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IKeranjangService, KeranjangService>();
 builder.Services.AddScoped<IAlamatService, AlamatService>();
+builder.Services.AddScoped<ITransaksiService, TransaksiService>();
+builder.Services.AddScoped<IDetailOrderService, DetailOrderService>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

@@ -10,5 +10,11 @@ Halaman Kategori
 Halaman Produk
 ![AlT text](screenshot/produk.png?raw=true "Halaman Produk")
 
+Halaman Keranjang
+![AlT text](screenshot/Keranjang.png?raw=true "Halaman Produk")
+
+Halaman Produk
+![AlT text](screenshot/RecordPesanan.png?raw=true "Halaman Produk")
+
 Halaman Login
 ![AlT text](screenshot/login.png?raw=true "Halaman Login")
