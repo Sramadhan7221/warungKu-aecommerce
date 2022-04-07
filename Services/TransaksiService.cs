@@ -27,12 +27,16 @@ public class TransaksiService : BaseDbService, ITransaksiService
           {
                var Alamat = await DbContext.Alamats.FirstOrDefaultAsync(x => x.IdAlamat == item.IdAlamat);
                var Status = await DbContext.StatusOrders.FirstOrDefaultAsync(x => x.IdSatus == item.StatusId);
+               var pengiriman = await DbContext.Pengirimen.FirstOrDefaultAsync();
                result.Add(new TransaksiViewModel
                {
+                    Id = item.NoTransaksi,
                     TglTransaksi = item.TglTransaksi,
                     Alamat = Alamat.Detail,
                     JmlBayar = item.JmlBayar,
                     Status = Status.Nama,
+                    Ongkir = pengiriman.Ongkir,
+                    Kurir = pengiriman.Kurir,
                     DetailOrders = await (from a in DbContext.DetailOrders
                                           join b in DbContext.Produks on a.IdProduk equals b.IdProduk
                                           where a.IdOrder == item.NoTransaksi
@@ -172,12 +176,13 @@ public class TransaksiService : BaseDbService, ITransaksiService
                                         JmlBarang = a.JmlBarang,
                                         SubTotal = a.SubTotal
                                    }).ToArrayAsync();
+          var status = await DbContext.StatusOrders.FirstOrDefaultAsync(x => x.IdSatus == transaksi.StatusId);
           return new TransaksiViewModel
           {
                Id = transaksi.NoTransaksi,
                TglTransaksi = transaksi.TglTransaksi,
                StatusId = transaksi.StatusId,
-               Status = (from status in DbContext.StatusOrders where status.IdSatus == transaksi.StatusId select status.Nama).ToString(),
+               Status = status.Nama,
                Alamat = alamat.Detail,
                JmlBayar = transaksi.JmlBayar,
                DetailOrders = detailOrder

@@ -23,5 +23,7 @@ public class TransaksiViewModel
      public string Alamat { get; set; }
      public string Status { get; set; }
      public int StatusId { get; set; }
+     public decimal Ongkir { get; set; }
+     public string Kurir { get; set; }
      public DetailOrderViewModel[] DetailOrders { get; set; }
 }

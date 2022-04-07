@@ -61,7 +61,6 @@ public class KeranjangController : BaseController
 
 
      [HttpPost]
-     [ValidateAntiForgeryToken]
      public async Task<IActionResult> Edit(KeranjangUpdateViewModel request)
      {
 
@@ -104,7 +103,6 @@ public class KeranjangController : BaseController
      }
 
      [HttpPost]
-     [ValidateAntiForgeryToken]
      public async Task<IActionResult> Delete(int? id)
      {
           if (id == null)

@@ -13,5 +13,6 @@ namespace WarungKuApp.Datas.Entities
         public DateTime TglBayar { get; set; }
         public decimal Pajak { get; set; }
         public string Tujuan { get; set; } = null!;
+        public string? BuktiBayar { get; set; }
     }
 }

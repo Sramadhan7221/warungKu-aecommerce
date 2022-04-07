@@ -22,20 +22,23 @@ public class TransaksiController : BaseController
      private readonly ITransaksiService _orderService;
      private readonly IDetailOrderService _detailOrderService;
      private readonly IStatusService _statusService;
+     private readonly IPengirimanService _pengirimanService;
 
      public TransaksiController(ILogger<TransaksiController> logger, IKeranjangService keranjangService,
-     ITransaksiService orderService, IDetailOrderService detailOrderService, IStatusService statusService)
+     ITransaksiService orderService, IDetailOrderService detailOrderService, IStatusService statusService, IPengirimanService pengirimanService)
      {
           _logger = logger;
           _keranjangService = keranjangService;
           _orderService = orderService;
           _detailOrderService = detailOrderService;
           _statusService = statusService;
+          _pengirimanService = pengirimanService;
      }
 
      [Authorize(Roles = AppConstant.ADMIN)]
 
-     public async Task<IActionResult> index(int? page, int? pageCount){
+     public async Task<IActionResult> index(int? page, int? pageCount)
+     {
           var tuplePagination = Common.ToLimitOffset(page, pageCount);
           var result = await _orderService.GetV3(tuplePagination.Item1, tuplePagination.Item2);
 
@@ -177,7 +180,52 @@ public class TransaksiController : BaseController
           return View(result);
      }
 
-     public async Task<IActionResult> Detail (int noTransaksi){
-          
+     public async Task<IActionResult> Detail(int id)
+     {
+          var result = await _orderService.Get(id);
+          return View(result);
+     }
+
+     public async Task<IActionResult> SetEkspedisi(PengirimanViewModel? request)
+     {
+          if (!ModelState.IsValid)
+          {
+               return Json(new
+               {
+                    success = false,
+                    message = "bad request"
+               });
+          }
+          if (request == null)
+          {
+               return Json(new
+               {
+                    success = false,
+                    message = "bad request"
+               });
+          }
+          try
+          {
+
+               await _pengirimanService.Add(request.convertToDbModel());
+
+               return Json(new
+               {
+                    success = true,
+                    message = "Berhasil"
+               });
+          }
+          catch (InvalidOperationException ex)
+          {
+               return Json(new
+               {
+                    success = false,
+                    message = ex.Message
+               });
+          }
+          catch
+          {
+               throw;
+          }
      }
 }

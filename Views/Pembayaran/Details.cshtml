@@ -1,0 +1,37 @@
+@using WarungKuApp.Helpers
+@model WarungKuApp.ViewModels.PembayaranViewModel
+@{
+   ViewData["Title"] = "Pembayaran";
+   Layout = "_LayoutTemplate";
+}
+<div class="container">
+   <div class="d-flex justify-content-center">
+      <div class="card col-10 mb-3">
+         <div class="card-header" style="background-color: #056497;">
+            <span class="text-light">E-Invoice</span>
+         </div>
+         <div class="row g-0">
+            <div class="col-md-4">
+               <img src="~/@Model.BuktiBayar" class="img-fluid rounded-start m-1" alt="...">
+            </div>
+            <div class="col-md-8">
+               <div class="card-body align-middle">
+                  <h5 class="card-title">@ViewData["Title"]</h5>
+                  <p class="card-text">Tanggal Bayar: @Model.TglBayar.ToString("d")</p>
+                  <p class="card-text">Tujuan: @Model.Tujuan</p>
+                  <p class="card-text">Metode Bayar: @Model.Metode</p>
+                  <p class="card-text">Total Bayar: @Model.TotalBayar</p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+@section Scripts {
+<script type="text/javascript">
+   $(document).ready(function () {
+
+   });
+</script>
+}

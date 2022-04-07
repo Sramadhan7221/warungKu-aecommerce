@@ -10,6 +10,65 @@
 <div class="container">
      @foreach (var item in ViewBag.result)
      {
+          @if (item.Status != "Order Dibayar")
+          {
+               <div class="card  mt-3">
+                    <div class="card-body">
+                         <input type="hidden">
+                         <h5 class="card-title">@item.TglTransaksi.ToString("d")</h5>
+                         <div class="row">
+                              <div class="col-7"><span class="card-subtitle mb-2 text-muted">Dikirim ke : @item.Alamat</span>
+                              </div>
+                              <div class="col-5">
+                                   <span
+                              class="d-flex justify-content-end badge rounded-pill bg-light text-dark border border-primary mb-2">Status
+                                        :
+                                        @item.Status</span>
+                              </div>
+                         </div>
+                         <p>Detail Pesanan</p>
+                         @foreach (var detail in item.DetailOrders)
+                         {
+                              <div class="row">
+                                   <div class="col-4">
+                                        <span class="card-text">@detail.NamaProduk</span>
+                                   </div>
+                                   <div class="col-4">
+                                        <span class="card-text">@detail.JmlBarang</span>
+                                   </div>
+                                   <div class="col-4">
+                                        <span class="card-text text-right">@detail.SubTotal.ToString("C", new
+                              CultureInfo("id-ID"))</span>
+                                   </div>
+                              </div>
+                         }
+                    </div>
+                    <div class="row mx-3">
+                         <div class="col-2 d-flex align-self-center">Pilih Kurir</div>
+                         <select class="form-select col-5 kurir" aria-label="Default select example">
+                              <option value="10000">JNE</option>
+                              <option value="12000">JnT</option>
+                              <option value="5000">SiCepat</option>
+                              <option value="8000">Pos Indonesia</option>
+                         </select>
+                    </div>
+                    <div class="row m-2 total">
+                         <h6 class="col-6 card-subtitle">Total Bayar = </h6>
+                         <h6 class="totalVal col-6 d-flex justify-content-end card-subtitle">@item.JmlBayar.ToString("C", new
+                    CultureInfo("id-ID"))</h6>
+                    </div>
+                    <div class="row m-2 ongkir">
+                         <h6 class="col-6 card-subtitle">Biaya Ongkir = </h6>
+                         <h6 class="col-6 d-flex justify-content-end card-subtitle d-none">Rp.</h6>
+                    </div>
+                    <div class="col-6">
+                         <form asp-controller="Pembayaran" asp-action="Index">
+                              <input type="hidden" name="NoTransaksi" value="@item.Id">
+                              <button class="btn btn-primary m-2" type="submit">Lakukan Pembayaran</button>
+                         </form>
+                    </div>
+               </div>
+          }
           <div class="card  mt-3">
                <div class="card-body">
                     <input type="hidden">
@@ -35,12 +94,32 @@
                                    <span class="card-text">@detail.JmlBarang</span>
                               </div>
                               <div class="col-4">
-                                   <span class="card-text">@detail.SubTotal.ToString("C", new CultureInfo("id-ID"))</span>
+                                   <span class="card-text text-right">@detail.SubTotal.ToString("C", new
+                              CultureInfo("id-ID"))</span>
                               </div>
                          </div>
                     }
-                    <h6 class="d-flex justify-content-end card-subtitle mt-2">Total Bayar = @item.JmlBayar.ToString("C", new
+               </div>
+               <div class="row m-2 total">
+                    <h6 class="col-6 card-subtitle">Total Bayar = </h6>
+                    <h6 class="totalVal col-6 d-flex justify-content-end card-subtitle">@item.JmlBayar.ToString("C", new
                     CultureInfo("id-ID"))</h6>
+               </div>
+               <div class="row m-2 ongkir">
+                    <h6 class="col-6 card-subtitle">Biaya Ongkir = </h6>
+                    <h6 class="col-6 d-flex justify-content-end card-subtitle">@item.Ongkir.ToString("C", new
+                    CultureInfo("id-ID"))</h6>
+               </div>
+               <div class="row m-2">
+                    <h6 class="col-6 card-subtitle">Ekspedisi = </h6>
+                    <h6 class="col-6 d-flex justify-content-end card-subtitle">@item.Kurir</h6>
+               </div>
+               <div class="col-6">
+                    <form asp-controller="Pembayaran" asp-action="Details">
+                         <input type="hidden" name="NoTransaksi" value="@item.Id">
+                         <button class="btn btn-success m-2" type="submit" disabled>Sudah Dibayar</button>
+                         <button class="btn btn-secondary m-2" type="submit">Lihat Detail</button>
+                    </form>
                </div>
           </div>
      }
@@ -51,7 +130,33 @@
 @section Scripts {
 <script type="text/javascript">
      $(document).ready(function () {
-
+          $(".kurir").on('change', function (e) {
+               const total = $(this).parent().siblings(".total").children(".totalVal"),
+                    totalVal = total.text();
+               let kurir = $(this).children("option:selected").text(),
+                    ongkir = $(this).children("option:selected").val(),
+                    status = "Pilihan customer";
+               $(this).parent().siblings(".ongkir").children(".d-flex").removeClass("d-none");
+               $.ajax({
+                    url: "/Transaksi/SetEkspedisi",
+                    type: "post",
+                    data: { Kurir: kurir, Ongkir: ongkir, Status: status },
+                    dataType: "json",
+                    success: function (response) {
+                         if (response.success) {
+                              console.log(response.message);
+                              total.text(`Rp.${hitung(totalVal, ongkir)}`);
+                         } else {
+                              console.log(response.message);
+                         }
+                    }
+               })
+          })
+          const hitung = (harga, ongkir) => {
+               let total = parseFloat(harga) + parseFloat(ongkir);
+               var abc = new Intl.NumberFormat(['ban', 'id']).format(total);
+               return abc;
+          }
      });
 </script>
 }

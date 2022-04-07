@@ -28,6 +28,8 @@ builder.Services.AddScoped<IAlamatService, AlamatService>();
 builder.Services.AddScoped<ITransaksiService, TransaksiService>();
 builder.Services.AddScoped<IDetailOrderService, DetailOrderService>();
 builder.Services.AddScoped<IStatusService, StatusService>();
+builder.Services.AddScoped<IPembayaranService, PembayaranService>();
+builder.Services.AddScoped<IPengirimanService, PengirimanService>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

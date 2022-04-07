@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace WarungKuApp.Helpers;
 
 public static class Common
@@ -12,6 +14,11 @@ public static class Common
      public static string ToEmpty(this string content)
      {
           return "";
+     }
+
+     public static string ToIDR(this decimal value)
+     {
+          return value.ToString("C", new CultureInfo("id-ID"));
      }
 
      public static int ToInt(this string content)
