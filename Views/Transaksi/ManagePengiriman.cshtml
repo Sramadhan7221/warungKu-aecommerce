@@ -1,0 +1,85 @@
+@using System.Globalization
+@model WarungKuApp.ViewModels.DetailTransaksiViewModel
+@{
+   ViewData["Title"] = "Daftar Pesanan";
+   Layout = "_LayoutTemplate";
+}
+<h1 class="text-dark">@ViewData["Title"]</h1>
+<div class="container">
+   <div class="card  mt-3">
+      <div class="card-body">
+         <div class="card-header col-12">@Model.Status</div>
+         <hr class="dropdown-divider">
+         <div class="row">
+            <div class="col-6">
+               @* <span class="card-subtitle mb-2 text-muted">@Model.Id</span> *@
+               <span class="card-subtitle my-2 text-muted">Tanggal Pembelian </span>
+               <p class="card-subtitle text-muted mt-1">Alamat Tujuan</p>
+               <p class="card-subtitle text-muted mt-1">Nomor Resi</p>
+            </div>
+            <div class="col-6">
+               @* <span class="text-right">Lihat invoice</span> *@
+               <span class="text-right my-2">: @Model.TglTransaksi.ToString("dddd, dd MMMM yyyy", new
+                  CultureInfo("id-ID"))</span>
+               <p class="card-subtitle text-muted mt-1">: @Model.Alamat</p>
+               <p class="card-subtitle text-muted mt-1">: @Model.NoResi</p>
+            </div>
+         </div>
+         <p>Detail Produk</p>
+         @foreach (var detail in @Model.DetailOrders)
+         {
+            <div class="card">
+               <div class="card-body">
+                  <h5 class="mb-2">@detail.NamaProduk</h5>
+                  <div class="row">
+                     <div class="col-6">
+                        <span class="mb-2 text-muted">Qty : @detail.JmlBarang</span>
+                     </div>
+                     <div class="col-6">
+                        <span class="mb-2">@detail.SubTotal.ToString("C", new CultureInfo("id-ID"))</span>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         }
+         <div class="card-footer">
+            <p>Total Harga</p>
+            <h6 class="card-subtitle mb-2">@Model.JmlBayar.ToString("C", new CultureInfo("id-ID"))</h6>
+         </div>
+      </div>
+   </div>
+
+   <div class="card mt-3">
+      <div class="card-body">
+         <form asp-controller="Transaksi" asp-action="ManagePesanan">
+            <input type="hidden" name="Id" value="@Model.Id">
+            <select name="StatusId" class="form-select" aria-label="Default select example">
+               <option value="3">Order Diproses</option>
+               <option value="4">Order Dikirim</option>
+            </select>
+
+            <div class="col-12 d-none mt-3">
+               <div class="mb-3">
+                  <input type="text" name="NoResi" class="form-control" placeholder="Nomor Resi">
+               </div>
+               <div class="mb-3">
+                  <textarea class="text-dark" name="Notes" id="" cols="10" rows="5" placeholder="Catatan"></textarea>
+               </div>
+            </div>
+            <button class="btn btn-primary m-2" type="submit">Konfirmasi</button>
+         </form>
+      </div>
+   </div>
+</div>
+@section Scripts {
+<script type="text/javascript">
+   $(document).ready(function () {
+      $("select[name='StatusId']").on('change', function (e) {
+         if ($(this).val() == 4) {
+            $(this).siblings('.col-12').removeClass('d-none');
+            $("input[name='NoResi']").focus();
+         }
+      })
+   });
+</script>
+}

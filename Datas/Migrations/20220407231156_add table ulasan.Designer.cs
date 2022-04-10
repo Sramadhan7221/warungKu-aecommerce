@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarungKuApp.Datas;
 
@@ -10,9 +11,10 @@ using WarungKuApp.Datas;
 namespace WarungKuApp.Datas.Migrations
 {
     [DbContext(typeof(warungkuContext))]
-    partial class warungkuContextModelSnapshot : ModelSnapshot
+    [Migration("20220407231156_add table ulasan")]
+    partial class addtableulasan
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -514,10 +516,6 @@ namespace WarungKuApp.Datas.Migrations
                         .HasColumnType("varchar(255)")
                         .HasColumnName("gambar");
 
-                    b.Property<int>("IdCustomer")
-                        .HasColumnType("int(11)")
-                        .HasColumnName("id_customer");
-
                     b.Property<int>("IdProduk")
                         .HasColumnType("int(11)")
                         .HasColumnName("id_produk");
@@ -527,10 +525,6 @@ namespace WarungKuApp.Datas.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)")
                         .HasColumnName("komentar");
-
-                    b.Property<int>("NoTransaksi")
-                        .HasColumnType("int(11)")
-                        .HasColumnName("no_transaksi");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int(11)")

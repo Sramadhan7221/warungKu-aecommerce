@@ -20,7 +20,7 @@ public class PembayaranViewModel
      public string Tujuan { get; set; }
      [Required]
      public IFormFile? GambarFile { get; set; }
-     public string BuktiBayar { get; set; }
+     public string? BuktiBayar { get; set; }
 
      public Pembayaran ConvertToDbModel()
      {
@@ -32,7 +32,7 @@ public class PembayaranViewModel
                Tujuan = this.Tujuan ?? string.Empty,
                Metode = this.Metode ?? string.Empty,
                TglBayar = this.TglBayar,
-               BuktiBayar = this.BuktiBayar
+               BuktiBayar = this.BuktiBayar ?? string.Empty
           };
      }
 }

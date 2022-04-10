@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarungKuApp.Datas;
 
@@ -10,9 +11,10 @@ using WarungKuApp.Datas;
 namespace WarungKuApp.Datas.Migrations
 {
     [DbContext(typeof(warungkuContext))]
-    partial class warungkuContextModelSnapshot : ModelSnapshot
+    [Migration("20220407101848_add kolom nomer resi")]
+    partial class addkolomnomerresi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -351,9 +353,6 @@ namespace WarungKuApp.Datas.Migrations
                         .HasColumnType("int(11)")
                         .HasColumnName("no_transaksi");
 
-                    b.Property<string>("Notes")
-                        .HasColumnType("longtext");
-
                     b.Property<decimal>("Ongkir")
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)")
@@ -502,50 +501,6 @@ namespace WarungKuApp.Datas.Migrations
                     b.ToTable("transaksi", (string)null);
                 });
 
-            modelBuilder.Entity("WarungKuApp.Datas.Entities.Ulasan", b =>
-                {
-                    b.Property<int>("IdUlasan")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int(11)")
-                        .HasColumnName("id_ulasan");
-
-                    b.Property<string>("Gambar")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("gambar");
-
-                    b.Property<int>("IdCustomer")
-                        .HasColumnType("int(11)")
-                        .HasColumnName("id_customer");
-
-                    b.Property<int>("IdProduk")
-                        .HasColumnType("int(11)")
-                        .HasColumnName("id_produk");
-
-                    b.Property<string>("Komentar")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("komentar");
-
-                    b.Property<int>("NoTransaksi")
-                        .HasColumnType("int(11)")
-                        .HasColumnName("no_transaksi");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int(11)")
-                        .HasColumnName("rating");
-
-                    b.HasKey("IdUlasan")
-                        .HasName("PRIMARY");
-
-                    b.HasIndex("IdProduk");
-
-                    b.HasIndex(new[] { "IdUlasan" }, "id_ulasan");
-
-                    b.ToTable("ulasan", (string)null);
-                });
-
             modelBuilder.Entity("WarungKuApp.Datas.Entities.Alamat", b =>
                 {
                     b.HasOne("WarungKuApp.Datas.Entities.Customer", "IdCustomerNavigation")
@@ -655,17 +610,6 @@ namespace WarungKuApp.Datas.Migrations
                     b.Navigation("StatusNavigation");
                 });
 
-            modelBuilder.Entity("WarungKuApp.Datas.Entities.Ulasan", b =>
-                {
-                    b.HasOne("WarungKuApp.Datas.Entities.Produk", "IdProdukUlasan")
-                        .WithMany("Ulasans")
-                        .HasForeignKey("IdProduk")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("IdProdukUlasan");
-                });
-
             modelBuilder.Entity("WarungKuApp.Datas.Entities.Alamat", b =>
                 {
                     b.Navigation("Orders");
@@ -694,8 +638,6 @@ namespace WarungKuApp.Datas.Migrations
                     b.Navigation("Keranjangs");
 
                     b.Navigation("ProdKategoris");
-
-                    b.Navigation("Ulasans");
                 });
 
             modelBuilder.Entity("WarungKuApp.Datas.Entities.StatusOrder", b =>

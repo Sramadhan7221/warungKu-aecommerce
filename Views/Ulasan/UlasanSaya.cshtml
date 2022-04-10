@@ -1,0 +1,57 @@
+@using System.Globalization
+@using WarungKuApp.Helpers
+@model List<WarungKuApp.ViewModels.UlasanViewModel>
+@{
+     ViewData["Title"] = "Daftar Ulasan saya";
+     Layout = "_LayoutTemplate";
+}
+
+<div class="container">
+     <div class="row my-3">@ViewData["Title"]</div>
+     @foreach (var item in Model)
+     {
+          <div class="card mb-3">
+               <div class="row g-0">
+                    <div class="col-md-2">
+                         <img src="~/@item.GambarProduk" width="175" alt="...">
+                    </div>
+                    <div class="col-md-10">
+                         <div class="card-body">
+                                   @Html.ActionLink(item.NamaProduk,"Details","Produk",new{
+                                        id = item.IdProduk
+                                   })
+                         </div>
+                    </div>
+               </div>
+               <div class="row g-0">
+                    <div class="col-md-1">
+                         <img src="~/@item.Gambar" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-11">
+                         <div class="card-body">
+                              <div class="row">
+                                   <div class="col-4">
+                                        <p>Rating</p>
+                                        <p>komentar</p>
+                                   </div>
+                                   <div class="col-8">
+                                        <p>
+                                             @for (int i = 0; i < item.Rating; i++)
+                                             {
+                                                  <i class="text-warning fa fa-star"></i>
+                                             }
+                                        </p>
+                                        <p>@item.Komentar</p>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     }
+</div>
+@section Scripts {
+<script type="text/javascript">
+
+</script>
+}

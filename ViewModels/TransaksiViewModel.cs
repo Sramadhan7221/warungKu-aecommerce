@@ -20,10 +20,11 @@ public class TransaksiViewModel
      public int Id { get; set; }
      public DateTime TglTransaksi { get; set; }
      public decimal JmlBayar { get; set; }
-     public string Alamat { get; set; }
-     public string Status { get; set; }
+     public string? Alamat { get; set; }
+     public int? IdAlamat { get; set; }
+     public string? Status { get; set; }
      public int StatusId { get; set; }
      public decimal Ongkir { get; set; }
-     public string Kurir { get; set; }
+     public string? Kurir { get; set; }
      public DetailOrderViewModel[] DetailOrders { get; set; }
 }

@@ -6,5 +6,6 @@ namespace WarungKuApp.Interfaces
      public interface IPengirimanService : ICrudService<Pengiriman>
      {
           // Task<Boolean> UpdateStatus(int noTrans);
+          Task<Boolean> isExist (int noTrans);
      }
 }

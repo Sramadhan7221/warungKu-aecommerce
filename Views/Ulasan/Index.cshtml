@@ -1,0 +1,46 @@
+@using WarungKuApp.Helpers
+@model WarungKuApp.ViewModels.UlasanViewModel
+@{
+   ViewData["Title"] = "Berikan Ulasan";
+   Layout = "_LayoutTemplate";
+}
+<div class="container">
+   <div class="card">
+      <h1 class="text-dark">@ViewData["Title"]</h1>
+      <div class="card mb-3">
+         <div class="row g-0">
+            <div class="col-md-4">
+               <img src="~/@Model.GambarProduk" width="150" alt="...">
+            </div>
+            <div class="col-md-8">
+               <div class="card-body">
+                  <p class="card-text">@Model.NamaProduk</p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="card-body">
+         <form asp-action="BeriUlasan" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="IdProduk" type="hidden">
+            <input asp-for="IdTransaksi" type="hidden">
+            <div class="form-group mb-3">
+               <input asp-for="Rating" class="form-control" placeholder="rating 1-10" max="10" />
+               <span asp-validation-for="Rating" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+               <textarea asp-for="Komentar" class="form-control"
+                  placeholder="Bagaimana kesan anda terhadap produk ini"></textarea>
+               <span asp-validation-for="Komentar" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+               <input asp-for="GambarFile" type="file" class="form-control" placeholder="Gambar testimoni" />
+               <span asp-validation-for="GambarFile" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+               <input type="submit" value="Kirim" class="btn btn-primary" />
+            </div>
+         </form>
+      </div>
+   </div>
+</div>

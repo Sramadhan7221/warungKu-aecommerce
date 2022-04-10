@@ -1,4 +1,5 @@
 @using Microsoft.AspNetCore.Mvc.Rendering;
+@using WarungKuApp.Helpers;
 @model WarungKuApp.ViewModels.ProdukReqViewModel;
 
 @{
@@ -6,52 +7,33 @@
      Layout = "_LayoutTemplate";
 }
 <div class="container">
-     <h4 class="my-3">Edit Produk</h4>
-
-     <div class="row">
-          <div class="col-md-12">
-               <form asp-action="Edit" method="post" enctype="multipart/form-data">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input asp-for="IdProduk" type="hidden" />
-                    <div class="form-group mb-3">
-                         <label asp-for="Nama" class="control-label"></label>
-                         <input asp-for="Nama" class="form-control" />
-                         <span asp-validation-for="Nama" class="text-danger"></span>
-                    </div>
-                    <div class="form-group mb-3">
-                         <label asp-for="Deskripsi" class="control-label"></label>
-                         <input asp-for="Deskripsi" class="form-control" />
-                         <span asp-validation-for="Deskripsi" class="text-danger"></span>
-                    </div>
-                    <div class="form-group mb-3">
-                         <label asp-for="Harga" class="control-label"></label>
-                         <input asp-for="Harga" class="form-control" />
-                         <span asp-validation-for="Harga" class="text-danger"></span>
-                    </div>
-                    <div class="form-group mb-3">
-                         <img src="~/@Model.GambarSrc" height="100" class="col-4" />
-                         <div class="col-8">
-                              <label asp-for="GambarFile" class="control-label"></label>
-                              <input asp-for="GambarFile" type="file" class="form-control" />
-                              <span asp-validation-for="GambarFile" class="text-danger"></span>
+     <h4 class="my-3">Detail Produk</h4>
+     <div class="card mb-3">
+          <div class="row g-0">
+               <div class="col-md-1">
+                    <img src="~/@Model.GambarSrc" class="img-fluid rounded-start" alt="...">
+               </div>
+               <div class="col-md-11">
+                    <div class="card-body">
+                         <h5 class="card-title">@Model.Nama</h5>
+                         <div class="row">
+                              <div class="col-5">
+                                   <p class="card-text">Stok</p>
+                                   <p class="card-text">Harga</p>
+                                   <p class="card-text">Deskripsi</p>
+                              </div>
+                              <div class="col-7">
+                                   <p class="card-text">: @Model.Stok</p>
+                                   <p class="card-text">: @Model.Harga.ToIDR()</p>
+                                   <p class="card-text">: @Model.Deskripsi</p>
+                              </div>
                          </div>
                     </div>
-                    <div class="form-group mb-3">
-                         <label asp-for="IdKategoriProduk" class="control-label"></label>
-                         <select asp-for="IdKategoriProduk" multiple class="form-select"
-                              asp-items="@ViewBag.KategoriDataSource">
-
-                         </select>
-                         <span asp-validation-for="IdKategoriProduk" class="text-danger"></span>
-                    </div>
-                    <div class="form-group mb-3">
-                         <a asp-action="edit" value="Edit" class="btn btn-primary" />
-                    </div>
-               </form>
+               </div>
           </div>
      </div>
      <div>
-          <a asp-action="Index">Back to List</a>
+          <a asp-action="Index" asp-controller="Home">Back to Home</a>
      </div>
 
 </div>

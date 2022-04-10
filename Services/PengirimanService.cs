@@ -34,9 +34,14 @@ public class PengirimanService : BaseDbService, IPengirimanService
           throw new NotImplementedException();
      }
 
-     public Task<Pengiriman?> Get(int id)
+     public Task<Pengiriman?> Get(int noTrans)
      {
-          throw new NotImplementedException();
+          return DbContext.Pengirimen.FirstOrDefaultAsync(x => x.NoTransaksi == noTrans);
+     }
+
+     public Task<Boolean> isExist(int noTrans)
+     {
+          return DbContext.Pengirimen.AnyAsync(x => x.NoTransaksi == noTrans);
      }
 
      public Task<Pengiriman?> Get(Expression<Func<Pengiriman, bool>> func)
@@ -49,8 +54,18 @@ public class PengirimanService : BaseDbService, IPengirimanService
           throw new NotImplementedException();
      }
 
-     public Task<Pengiriman> Update(Pengiriman obj)
+     public async Task<Pengiriman> Update(Pengiriman obj)
      {
-          throw new NotImplementedException();
+          var pengiriman = await DbContext.Pengirimen.FirstOrDefaultAsync(x => x.NoTransaksi == obj.NoTransaksi);
+          if (pengiriman == null)
+          {
+               throw new InvalidOperationException("cannot find pengiriman item in database");
+          }
+          pengiriman.Ongkir = obj.Ongkir;
+          pengiriman.Kurir = obj.Kurir;
+          DbContext.Update(pengiriman);
+          await DbContext.SaveChangesAsync();
+
+          return pengiriman;
      }
 }

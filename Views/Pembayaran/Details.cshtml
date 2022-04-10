@@ -17,10 +17,11 @@
             <div class="col-md-8">
                <div class="card-body align-middle">
                   <h5 class="card-title">@ViewData["Title"]</h5>
+                  <p class="card-text">Nomor Transaksi: @Model.NoTransaksi</p>
                   <p class="card-text">Tanggal Bayar: @Model.TglBayar.ToString("d")</p>
                   <p class="card-text">Tujuan: @Model.Tujuan</p>
                   <p class="card-text">Metode Bayar: @Model.Metode</p>
-                  <p class="card-text">Total Bayar: @Model.TotalBayar</p>
+                  <p class="card-text">Total Bayar: @Model.TotalBayar.ToIDR()</p>
                </div>
             </div>
          </div>

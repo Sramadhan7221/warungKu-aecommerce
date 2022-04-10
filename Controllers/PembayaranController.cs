@@ -12,15 +12,17 @@ public class PembayaranController : BaseController
 {
      private readonly IPembayaranService _pembayaranService;
      private readonly ITransaksiService _transaksiService;
+     private readonly IPengirimanService _pengirimanService;
      private readonly ILogger<PembayaranController> _logger;
 
      private readonly IWebHostEnvironment _iWebHost;
 
-     public PembayaranController(ILogger<PembayaranController> logger, IPembayaranService PembayaranService, IWebHostEnvironment iwebHost, ITransaksiService transaksiService)
+     public PembayaranController(ILogger<PembayaranController> logger, IPembayaranService PembayaranService, IWebHostEnvironment iwebHost, ITransaksiService transaksiService, IPengirimanService pengirimanService)
      {
           _logger = logger;
           _pembayaranService = PembayaranService;
           _transaksiService = transaksiService;
+          _pengirimanService = pengirimanService;
           _iWebHost = iwebHost;
      }
 
@@ -29,13 +31,14 @@ public class PembayaranController : BaseController
      {
           if (request == null)
           {
-               BadRequest();
+               return BadRequest();
           }
           var transaksi = await _transaksiService.Get(request.NoTransaksi);
+          var pengiriman = await _pengirimanService.Get(request.NoTransaksi);
           return View(new PembayaranViewModel
           {
                NoTransaksi = request.NoTransaksi,
-               tagihan = transaksi.JmlBayar
+               tagihan = transaksi.JmlBayar + pengiriman.Ongkir
           });
      }
 

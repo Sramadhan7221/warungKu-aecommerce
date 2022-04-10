@@ -12,6 +12,8 @@ namespace WarungKuApp.ViewModels
           public decimal Ongkir { get; set; }
           [Required]
           public string Status { get; set; } = null!;
+          public string? noResi { get; set; }
+          public int? IdAlamat { get; set; }
 
           public Pengiriman convertToDbModel()
           {
@@ -19,7 +21,10 @@ namespace WarungKuApp.ViewModels
                {
                     Kurir = string.IsNullOrEmpty(this.Kurir) ? string.Empty : this.Kurir,
                     Ongkir = this.Ongkir,
-                    Status = string.IsNullOrEmpty(this.Status) ? string.Empty : this.Status
+                    Status = string.IsNullOrEmpty(this.Status) ? string.Empty : this.Status,
+                    NoResi = noResi,
+                    NoTransaksi = this.NoTransaksi,
+                    IdAlamat = this.IdAlamat.Value
                };
           }
      }

@@ -2,7 +2,7 @@
 @model List<WarungKuApp.ViewModels.TransaksiViewModel>
 @{
   ViewData["Title"] = "Daftar Pesanan";
-  Layout = "_LayoutTemplate";
+  @* Layout = "_LayoutTemplate"; *@
   int i = 0;
 }
 
@@ -36,10 +36,12 @@
     {
       <tr>
         <th scope="row">@item.Id</th>
-        <td>@Html.ActionLink(string.Format("#{0}-{1}", item.Id, item.TglTransaksi.ToShortDateString()), "Detail",
+        <td>@Html.ActionLink(string.Format("#{0}-{1}", item.Id, item.TglTransaksi.ToShortDateString()),
+        "ManagePengiriman",
         "Transaksi",
         new {
-        id = item.Id
+        id = item.Id,
+
         })</td>
         <td>@item.TglTransaksi.ToLongDateString() @item.TglTransaksi.ToLongTimeString()</td>
         <td>@item.Status</td>
@@ -48,10 +50,38 @@
     }
   </tbody>
 </table>
+<div class="container">
+  <div class="card">
+    <table id="tabelTransaksi" class="table table-hover text-dark">
+      <thead>
+        <tr>
+          <th scope="col">OrderID</th>
+          <th scope="col">No Transaksi</th>
+          <th scope="col">Tgl Transaksi</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+      <tfoot></tfoot>
+    </table>
+  </div>
+</div>
 @section Scripts {
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function () {
-
+    $('#tabelTransaksi').DataTable( {
+        "lengthMenu": [[10, 20, 25, -1], [10, 20, 25, "All"]],
+          "processing": true,
+          "serverSide": true,
+          "ajax": "Transaksi/datatable",
+          "columns": [
+            { "data": "id" },
+            { "data": "tglTransaksi" },
+            { "data": "jmlBayar" },
+            { "data": "status"}
+          ]
+      } );
   });
 </script>
 }

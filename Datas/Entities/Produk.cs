@@ -9,6 +9,7 @@ namespace WarungKuApp.Datas.Entities
         {
             Keranjangs = new HashSet<Keranjang>();
             ProdKategoris = new HashSet<ProdKategori>();
+            Ulasans = new HashSet<Ulasan>();
         }
 
         public int IdProduk { get; set; }
@@ -20,5 +21,6 @@ namespace WarungKuApp.Datas.Entities
 
         public virtual ICollection<Keranjang> Keranjangs { get; set; }
         public virtual ICollection<ProdKategori> ProdKategoris { get; set; }
+        public virtual ICollection<Ulasan> Ulasans { get; set; }
     }
 }

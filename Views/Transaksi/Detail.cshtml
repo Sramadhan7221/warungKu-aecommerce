@@ -1,50 +1,69 @@
 @using System.Globalization
-@model WarungKuApp.ViewModels.TransaksiViewModel
+@using WarungKuApp.Helpers
+@model WarungKuApp.ViewModels.DetailTransaksiViewModel
 @{
-   ViewData["Title"] = "Daftar Pesanan";
-   Layout = "_LayoutTemplate";
+     ViewData["Title"] = "Daftar Pesanan";
+     Layout = "_LayoutTemplate";
 }
-<h1 class="text-dark">@ViewData["Title"]</h1>
+
 <div class="container">
-   <div class="card  mt-3">
-      <div class="card-body">
-         <input type="hidden">
-         <div class="row">
-            <span class="card-header col-6">@Model.Status</span>
-         </div>
-         <hr class="dropdown-divider">
-         <div class="row">
-            <div class="col-7">
-               <span class="card-subtitle mb-2 text-muted">@Model.Id</span>
-               <span class="card-subtitle mb-2 text-muted">Tanggal Pembelian :</span>
-            </div>
-            <div class="col-5">
-               <span class="text-right">Lihat invoice</span>
-               <span class="text-right">@Model.TglTransaksi.ToString("dddd, dd MMMM yyyy", new
-                  CultureInfo("id-ID"))</span>
-            </div>
-         </div>
-         <p>Detail Produk</p>
-         @foreach (var detail in @Model.DetailOrders)
-         {
-            <div class="card">
-               <div class="card-body">
-                  <h5 class="mb-2">@detail.NamaProduk</h5>
-                  <div class="row">
-                     <div class="col-6">
-                        <span class="mb-2 text-muted">Qty : @detail.JmlBarang</span>
-                     </div>
-                     <div class="col-6">
-                        <span class="mb-2">@detail.SubTotal.ToString("C", new CultureInfo("id-ID"))</span>
-                     </div>
-                  </div>
+     <div class="card">
+          <div class="card-body mt-2">
+               <h5 class="card-title">Nomor Transaksi : @Model.Id</h5>
+               <div class="row">
+                    <div class="col-4">
+                         <h6 class="card-text mb-2">Tanggal Transaksi</h6>
+                         <h6 class="card-text mb-2">Metode Pembayaran</h6>
+                         <h6 class="card-text mb-2">Nama Pemesan</h6>
+                         <h6 class="card-text mb-2">Ekspedisi Pengiriman</h6>
+                         <h6 class="card-text mb-2">Ongkos Kirim</h6>
+                         <h6 class="card-text mb-2">Alamat</h6>
+                         <h6 class="card-text mb-2">Total Bayar</h6>
+                    </div>
+                    <div class="col-8">
+                         <p class="card-text m-0">: @Model.TglTransaksi.ToString("d")</p>
+                         <p class="card-text m-0">: @Model.Metode</p>
+                         <p class="card-text m-0">: @Model.NamaCustomer</p>
+                         <p class="card-text m-0">: @Model.Kurir</p>
+                         <p class="card-text m-0">: @Model.Ongkir.ToIDR()</p>
+                         <p class="card-text m-0">: @Model.Alamat</p>
+                         <p class="card-text m-0">: @Model.TotalBayar.ToIDR()</p>
+                    </div>
                </div>
-            </div>
-         }
-         <div class="card-footer">
-            <p>Total Harga</p>
-            <h6 class="card-subtitle mb-2">@Model.JmlBayar.ToString("C", new CultureInfo("id-ID"))</h6>
-         </div>
-      </div>
-   </div>
+               @foreach (var item in Model.DetailOrders)
+               {
+                    <div class="card mb-3">
+                         <div class="row g-0">
+                              <div class="col-md-4">
+                                   <img src="~/@item.Image" width="250" alt="...">
+                              </div>
+                              <div class="col-md-8">
+                                   <div class="card-body">
+                                        <h5 class="card-title">@item.NamaProduk</h5>
+                                        <div class="row">
+                                             <div class="col-6">
+                                                  <p class="card-text">Harga Barang</p>
+                                                  <p class="card-text">Qty</p>
+                                                  <p class="card-text">Sub.Total</p>
+                                             </div>
+                                             <div class="col-6">
+                                                  <p class="card-text">: @item.Harga.ToIDR()</p>
+                                                  <p class="card-text">: @item.JmlBarang</p>
+                                                  <p class="card-text">: @item.SubTotal.ToIDR()</p>
+                                             </div>
+                                        </div>
+                                        <div class="col-6 mt-3">
+                                             <form asp-controller="Ulasan" asp-action="Index" as method="post">
+                                                  <input type="hidden" name="idProduk" value="@item.IdProduk">
+                                                  <input type="hidden" name="" value="@item.IdProduk">
+                                                  <button type="submit" class="btn btn-primary">Beri Ulasan</button>
+                                             </form>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               }
+          </div>
+     </div>
 </div>

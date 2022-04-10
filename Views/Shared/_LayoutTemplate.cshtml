@@ -18,6 +18,7 @@
    <link rel="stylesheet" href="~/css/login.css">
    @* Custom Css *@
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
+   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
    <link rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.2.0/dist/select2-bootstrap-5-theme.min.css" />
 
@@ -95,9 +96,18 @@ https://templatemo.com/tm-559-zay-shop
                      <li class="nav-item">
                         <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin</a>
                      </li>
-                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Keranjang" asp-action="Index">Keranjang</a>
-                     </li>
+                     @if (ViewBag.IsCustomer)
+                     {
+                        <li class="nav-item">
+                           <a class="nav-link" asp-area="" asp-controller="Keranjang" asp-action="Index">Keranjang</a>
+                        </li>
+                     }
+                     else
+                     {
+                        <li class="nav-item">
+                           <a class="nav-link" asp-area="" asp-controller="Transaksi" asp-action="Index">Pesanan</a>
+                        </li>
+                     }
                   }
                </ul>
             </div>
@@ -133,7 +143,8 @@ https://templatemo.com/tm-559-zay-shop
                      </li>
                      <li><a asp-controller="Transaksi" asp-action="MyOrder" class="dropdown-item">Riwayat Transaksi</a>
                      </li>
-                     <li><a class="dropdown-item" href="#">Something else here</a></li>
+                     <li><a asp-controller="Ulasan" asp-action="UlasanSaya" class="dropdown-item">Riwayat Ulasan</a>
+                     </li>
                   </ul>
                </div>
                @if (ViewBag.IsLogged != null && ViewBag.IsLogged)
@@ -155,7 +166,7 @@ https://templatemo.com/tm-559-zay-shop
 
       </div>
    </nav>
-   
+
    <!-- Close Header -->
 
    <!-- Modal -->
@@ -175,7 +186,7 @@ https://templatemo.com/tm-559-zay-shop
          </form>
       </div>
    </div>
-   <div class="my-3">
+   <div class="my-3" style="background-color: #E3E3E3;">
       @RenderBody()
    </div>
 
